@@ -1,0 +1,4 @@
+- add null and undefined support
+- add typedarray support
+- add symbol support
+

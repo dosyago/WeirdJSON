@@ -10,7 +10,15 @@ function test() {
     hello: true
   };
 
+  console.log({a});
+
   const aStr = JSON41.stringify(a);
+
+  const bucket = aStr.split('').map(c => c.codePointAt(0).toString(36)).join('');
+
+  console.log({bucket});
+
+  console.log({converted: JSON.parse(aStr)});
 
   console.log({aStr});
 
