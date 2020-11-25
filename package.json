@@ -1,0 +1,26 @@
+{
+  "name": "weird-json",
+  "version": "1.0.0",
+  "description": "Strange encoded JSONs",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node -r esm src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c9fe/weird-json.git"
+  },
+  "keywords": [
+    "JSON",
+    "encoding",
+    "unicode",
+    "UTF32",
+    "base36"
+  ],
+  "author": "@dosy",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/c9fe/weird-json/issues"
+  },
+  "homepage": "https://github.com/c9fe/weird-json#readme"
+}
