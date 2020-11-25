@@ -4,7 +4,7 @@
   "description": "Strange encoded JSONs",
   "main": "src/index.js",
   "scripts": {
-    "test": "node -r esm src/index.js"
+    "test": "node -r esm tests/run.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/c9fe/weird-json/issues"
   },
-  "homepage": "https://github.com/c9fe/weird-json#readme"
+  "homepage": "https://github.com/c9fe/weird-json#readme",
+  "dependencies": {
+    "esm": "^3.2.25"
+  }
 }
