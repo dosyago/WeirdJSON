@@ -253,7 +253,7 @@ import JSON46 from 'json46';
 import json37 from 'json37';
 ```
 
-## Technical Details
+## technicalisters
 
 We aim for equality based on [assert.deepStrictEqual](https://nodejs.org/api/assert.html#assert_assert_deepstrictequal_actual_expected_message), which has the following specifications:
 
@@ -269,7 +269,7 @@ We aim for equality based on [assert.deepStrictEqual](https://nodejs.org/api/ass
 - Recursion stops when both sides differ or both sides encounter a circular reference.
 - WeakMap and WeakSet comparison does not rely on their values. See below for further details.
 
-## Roadmap
+## roadiest mappings
 
 - [x] add support for BigInt
 - [x] add support for NaN, Infinity, null and undefined
