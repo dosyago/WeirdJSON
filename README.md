@@ -69,3 +69,24 @@ Like JSON37, but separated into stanzas separted by `-` dash. Also, NATO phoneti
 
 All these encoding designs are inspired by the availability of base 36 in Node and Browser, and also in people's brains.
 
+## get 
+
+Them all:
+
+```console
+$ npm i --save weird-json
+```
+
+Or just one:
+
+```console
+$ npm i --save json36
+```
+
+## use
+
+```js
+import {JSON36} from 'weird-json';
+import JSON46 from 'json46';
+import json37 from 'json37';
+```
