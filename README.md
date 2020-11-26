@@ -14,15 +14,15 @@ A menagerie of strange, encoded JSONs, for connoisseurs.
 
 > What's the point of this? I mean it's clearly a joke, but... Why? Oh yeah, let's invent a new incompatible standard. Great idea. Just a reminder to everyone, don't use this in production! 
 >
-> &mdash; Top comment on HN
+> &mdash; Top comment on HN :pout:
 
 > This sucks. Real JSON is waay better than OP. Or at least use Protobuf, it's popular and created by Google, or bson. Don't use this, it's clearly a security nightmare.
 >
-> &mdash; Second Top comment on HN
+> &mdash; Second Top comment on HN :vomiting_face:	
 
-> Hmm, interesting idea. Have you ever heard of Base64? Just curious why you chose to name it 43? There's a specific definition of 43 and it doesn't say anything about JSON. 
+> Hmm, interesting idea. Have you ever heard of Base64? Just curious why you chose to name it 46? There's a specific definition of 46 and it doesn't say anything about JSON. 
 > 
-> &mdash; Third top comment on HN
+> &mdash; Third top comment on HN :japanese_goblin:
 
 ## get to know the current JSONs-in-residence
 
