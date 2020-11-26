@@ -100,3 +100,31 @@ import {JSON36} from 'weird-json';
 import JSON46 from 'json46';
 import json37 from 'json37';
 ```
+
+## Technical Details
+
+We aim for equality based on [assert.deepStrictEqual](https://nodejs.org/api/assert.html#assert_assert_deepstrictequal_actual_expected_message), which has the following specifications:
+
+- Primitive values are compared using the SameValue Comparison, used by Object.is().
+- Type tags of objects should be the same.
+- [[Prototype]] of objects are compared using the Strict Equality Comparison.
+- Only enumerable "own" properties are considered.
+- Error names and messages are always compared, even if these are not enumerable properties.
+- Enumerable own Symbol properties are compared as well.
+- Object wrappers are compared both as objects and unwrapped values.
+- Object properties are compared unordered.
+- Map keys and Set items are compared unordered.
+- Recursion stops when both sides differ or both sides encounter a circular reference.
+- WeakMap and WeakSet comparison does not rely on their values. See below for further details.
+
+## Roadmap
+
+- [x] add support for BigInt
+- [x] add support for NaN, Infinity, null and undefined
+- [x] add typedarray support
+- [x] support floating point exponent notification
+- [x] add symbol support
+- [ ] implement json37, and json38
+- [ ] Add support for Map, Set
+- [ ] Add support for WeakMap, WeakSet
+- [ ] Add support for Date

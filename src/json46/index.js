@@ -120,6 +120,8 @@ function decodeKeys(obj) {
 }
 
 function encode(val) {
+  const to = typeof val;
+
   if ( val === null ) {
     return `v`;
   } else if ( val === undefined ) {
@@ -128,13 +130,32 @@ function encode(val) {
     return `w`;
   } else if ( val === Infinity || val === -Infinity ) {
     return `z${Math.sign(val) == 1 ? '+' : '-' }`;
-  } else if ( typeof val === "bigint" ) {
+  } else if ( to === "symbol" ) {
+    const key = Symbol.keyFor(val);
+    console.log({key});
+    if ( key ) {
+      return `y${bin2hex(key)}`;
+    } else {
+      console.warn("Error on value of type Symbol", val, val.toString());
+      throw new TypeError(`Sorry, the only thing we don't support is Symbols that do not have keys in the global symbol registry (i.e., Symbols not created using Symbol.for are unsupported, because there is no way to recreate them)`);
+    }
+  } else if ( val instanceof Function ) {
+    /**
+      if ( val[Symbol.for('[[referentially-transparent]]')] ) {
+        return `t${bin2hex(val.toString())}`; 
+      } else {
+    **/
+      console.warn("Error on value of type function", val, val.toString());
+      //throw new TypeError(`Sorry, we do not support functions because even tho they can be converted to string values and serialized, a function has a scope, and this scope cannot currently be serialized. If you want to serialize functions, please indicate they are referentially transparent by using the global symbol with key "[[referentially-transparent]]" to set a property on the function to true`);
+      throw new TypeError(`Sorry we do not support functions`);
+    /**}**/
+  } else if ( to === "bigint" ) {
     return `o${val.toString(36)}`;
   } else if ( val === true ) {
     return 'a';
   } else if ( val === false ) {
     return 'b';
-  } else if ( typeof val === "number" ) {
+  } else if ( to === "number" ) {
     const strVal = val.toString();
     if ( strVal.includes('e') ) {
       return `s${strVal}`;
@@ -159,6 +180,14 @@ function decode(val, that, key) {
     return true;
   } else if ( val === 'b' ) {
     return false;
+  } else if ( val[0] === 't' ) { 
+    console.warn("Error on value of intended type function", val);
+    throw new TypeError(`Sorry we do not support functions`);
+    //return eval(hex2bin(val.slice(1)));
+  } else if ( val[0] === 'y' ) {
+    const key = hex2bin(val.slice(1));
+    const symbol = Symbol.for(key);
+    return symbol;
   } else if ( val[0] === 'r' ) {
     if ( val.includes(".") ) {
       // there is no "parseFloat(str, radix)", so...

@@ -4,6 +4,9 @@ import {JSON46,JSON36,JSON37} from '../src/index.js';
 test();
 
 function test() {
+  const func = (a,b,c) => a*b*c
+
+  func[Symbol.for('[[referentially-transparent]]')] = true;
   const a = {
     name: 'Cris',
     age: 36,
@@ -17,7 +20,7 @@ function test() {
     smallExp: 1.93e-81,
     azza: new Uint8Array([9,10,11]),
     happiness: [
-      { object: 999999n, z: NaN },
+      { object: 999999n, z: NaN, p: Symbol.for("hello-kitty") },
       null,
       "CRIS",
       238947,
