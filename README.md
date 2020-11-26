@@ -5,22 +5,28 @@ A menagerie of strange, encoded JSONs, for connoisseurs.
 ## testimonials
 
 > Go where no Unicode JSON has gone before. Go where only ASCII can!
-> - J. Son F. Kennedy
+>
+> &mdash; J. (Son) F. Kennedy
 
 > You stole our goddamn alphabet!
-> - NATO
+>
+> &mdash; NATO
 
 > What's the point of this? I mean it's clearly a joke, but... Why? Oh yeah, let's invent a new incompatible standard. Great idea. Just a reminder to everyone, don't use this in production! 
-> - Top comment on HN
+>
+> &mdash; Top comment on HN
 
 > This sucks. Real JSON is waay better than OP. Or at least use Protobuf, it's popular and created by Google, or bson. Don't use this, it's clearly a security nightmare.
-> - Second Top comment on HN
+>
+> &mdash; Second Top comment on HN
 
 > Hmm, interesting idea. Have you ever heard of Base64? Just curious why you chose to name it 43? There's a specific definition of 43 and it doesn't say anything about JSON. 
-> - Third top comment on HN
+> 
+> &mdash; Third top comment on HN
 
-## get to know the current residents
+## get to know the current JSONs-in-residence
 
+The merry little band of tricksters: *JSON46*, *JSON36*, *JSON37* and ever-affable *JSON38*
 
 ### JSON46
 
@@ -49,6 +55,7 @@ Like JSON37, but separated into stanzas separted by `-` dash. Also, NATO phoneti
 - can I have a text and coding format to make everything ASCII for transport that isn't affected by different apis for base64 and no JS and the browser?
 - can I have a Jason that supports Biggins and typed arrays as well as null undefined and symbols?
 - is there a encoding to ASCII text that I can easily access in JavaScript in the browser and in node without writing it myself nor importing a dependency?
+- what if I want to say JSON over the telephone or radio?
 
-All these encoding designs are inspired by the availability of base 36 in Node and Browser.
+All these encoding designs are inspired by the availability of base 36 in Node and Browser, and also in people's brains.
 
