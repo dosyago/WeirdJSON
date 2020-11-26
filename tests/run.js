@@ -7,15 +7,21 @@ function test() {
   const a = {
     name: 'Cris',
     age: 36,
+    mmm: undefined,
     code: 3948573458972n,
     hello: true,
+    great: null,
+    hi: NaN,
     bigExp: 2.95e77,
     smallExp: 1.93e-81,
     azza: new Uint8Array([9,10,11]),
     happiness: [
       { object: 999999n },
+      null,
       "CRIS",
       238947,
+      undefined,
+      NaN,
       2234.1231,
       34589358794234233498752345789345n,
       { great: [true, false] },
@@ -24,7 +30,7 @@ function test() {
     ]
   };
 
-  console.log({a});
+  console.log(util.inspect({a}, false, null, true));
 
   const aStr = JSON46.stringify(a);
 

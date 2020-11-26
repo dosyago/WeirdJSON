@@ -48,6 +48,9 @@ const width36TA = {
 	"BigUint64Array":		    Math.ceil(Math.log(2**64)/Math.log(36)),		
 }
 
+// clever trick to get undefined to work
+const WillBecomeUndefined = Symbol('[[WillBecomeUndefined]]');
+
 export default JSON46;
 
 export function clone(thing) {
@@ -79,10 +82,17 @@ function weirdReplacer(replacer) {
 
 function weirdReviver(reviver) {
   return function (key, value) {
+    const that = this;
     if ( isObject(value) ) {
       value = decodeKeys(value);
+    } else if ( Array.isArray(value) ) {
+      value.forEach((v,i) => {
+        if ( v === WillBecomeUndefined ) {
+          value[i] = undefined;
+        }
+      });
     } else if ( typeof value == "string" ) {
-      value = decode(value);
+      value = decode(value, that, key);
     }
     return value;
   };
@@ -102,12 +112,23 @@ function decodeKeys(obj) {
   for( const encodedKey of Object.keys(obj) ) {
     const decodedKey = decode(encodedKey);
     oldObj[decodedKey] = obj[encodedKey];
+    if ( obj[encodedKey] === WillBecomeUndefined ) {
+      oldObj[decodedKey] = undefined;
+    }
   }
   return oldObj;
 }
 
 function encode(val) {
-  if ( typeof val === "bigint" ) {
+  if ( val === null ) {
+    return `v`;
+  } else if ( val === undefined ) {
+    return `u`;
+  } else if ( Number.isNaN(val) ) {
+    return `w`;
+  } else if ( val === Infinity || val === -Infinity ) {
+    return `z${
+  } else if ( typeof val === "bigint" ) {
     return `o${val.toString(36)}`;
   } else if ( val === true ) {
     return 'a';
@@ -125,8 +146,14 @@ function encode(val) {
   return bin2hex(val);
 }
 
-function decode(val) {
-  if ( val === 'a' ) {
+function decode(val, that, key) {
+  if ( val === 'u' ) {
+    return WillBecomeUndefined;
+  } else if ( val === 'v' ) {
+    return null;
+  } else if ( val === 'w' ) {
+    return NaN;
+  } else if ( val === 'a' ) {
     return true;
   } else if ( val === 'b' ) {
     return false;
