@@ -23,6 +23,7 @@ export function parse(code, reviver = a => a) {
 
 export function stringify(value, replacer = b => b, space = 0) {
   const result = JSON46.stringify(value, replacer, space);
+  console.log({result});
   const code = encode(result);
   return code;
 }
