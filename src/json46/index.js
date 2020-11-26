@@ -5,6 +5,12 @@ const JSON46 = {
   clone
 };
 
+const TypedArray = Object.getPrototypeOf(Object.getPrototypeOf(new Uint8Array)).constructor;
+
+const isTypedArray = val => Object.getPrototypeOf(Object.getPrototypeOf(val)).constructor == TypedArray;
+
+console.log({TypedArray});
+
 export default JSON46;
 
 export function clone(thing) {
@@ -65,7 +71,7 @@ function decodeKeys(obj) {
 
 function encode(val) {
   if ( typeof val === "bigint" ) {
-    return `o${val.toString(36).padStart(3,'0')}`;
+    return `o${val.toString(36)}`;
   } else if ( val === true ) {
     return 'a';
   } else if ( val === false ) {
@@ -73,9 +79,11 @@ function encode(val) {
   } else if ( typeof val === "number" ) {
     const strVal = val.toString();
     if ( strVal.includes('e') ) {
-      return `s${strVal.padStart(3,'0')}`;
+      return `s${strVal}`;
     }
-    return `r${val.toString(36).padStart(3,'0')}`;
+    return `r${val.toString(36)}`;
+  } else if ( isTypedArray(val) ) {
+    return `x${specifyTypedArray(val)}${serializeTypedArray(val).padStart(2,'-.')}`; 
   }
   return bin2hex(val);
 }
@@ -85,7 +93,7 @@ function decode(val) {
     return true;
   } else if ( val === 'b' ) {
     return false;
-  } else if ( val[0] === 'r' && val.length >= 4 ) {
+  } else if ( val[0] === 'r' ) {
     if ( val.includes(".") ) {
       // there is no "parseFloat(str, radix)", so...
       // this code came from checking and mentally reversing 
@@ -110,9 +118,9 @@ function decode(val) {
     } else {
       return parseInt(val.slice(1), 36);
     }
-  } else if ( val[0] === 's' && val.length >= 4 ) {
+  } else if ( val[0] === 's' ) {
     return parseFloat(val.slice(1));
-  } else if ( val[0] === 'o' && val.length >= 4 ) {
+  } else if ( val[0] === 'o' ) {
     // unfortunately there is no parseBigInt function
     const units = val.slice(1); 
     let n = 0n, sign = 1n;
