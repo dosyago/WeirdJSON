@@ -9,6 +9,8 @@ function test() {
     age: 36,
     code: 3948573458972n,
     hello: true,
+    bigExp: 2.95e77,
+    smallExp: 1.93e-81,
     happiness: [
       { object: 999999n },
       "CRIS",

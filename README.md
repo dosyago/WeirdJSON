@@ -33,11 +33,15 @@ Features:
 
 ### JSON36
 
-Like JSON46, but encoded again into the 36ers: a-z, 0-9
+Like JSON46, but encoded again into the 36ers: a-z, 0-9. Fully [NATO](https://www.nato.int/cps/fr/natohq/declassified_136216.htm) [compliant](https://archives.nato.int/phonetic-alphabet;isad).
 
 ### JSON37
 
-Like JSON46, t compressed with LZW, then encoded into the 36ers: a-z, 0-9 plus `.`
+Like JSON46, but compressed with LZW, then encoded into the 36ers: a-z, 0-9 plus `.` Also, NATO phonetic alphabet compliant.
+
+### JSON38
+
+Like JSON37, but separated into stanzas separted by `-` dash. Also, NATO phonetic alphabet OK.
 
 ## design
 
