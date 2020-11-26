@@ -69,7 +69,7 @@ Like JSON46, but compressed with LZW, then encoded into the 36ers: a-z, 0-9 plus
 
 Like JSON37, but separated into stanzas separted by `-` dash. Also, NATO phonetic alphabet OK.
 
-## example
+## examplings
 
 From the tests:
 ```js
@@ -245,7 +245,7 @@ Or just one:
 $ npm i --save json36
 ```
 
-## use
+## usagisms
 
 ```js
 import {JSON36} from 'weird-json';
