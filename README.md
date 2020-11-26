@@ -1,4 +1,4 @@
-# :blue_heart: weird-json [![latest package](https://img.shields.io/github/v/release/c9fe/weird-json?label=latest%20release)](https://github.com/c9fe/weird-json/releases) [![visitors+++](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fc9fe%2Fweird-json&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=%28today%2Ftotal%29%20visitors%2B%2B%2B%20since%20Oct%2027%202020&edge_flat=false)](https://hits.seeyoufarm.com)
+# :blue_heart: weird-json [![visitors+++](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fc9fe%2Fweird-json&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=%28today%2Ftotal%29%20visitors%2B%2B%2B%20since%20Nov%2026%202020&edge_flat=false)](https://hits.seeyoufarm.com)
 
 A menagerie of strange, encoded JSONs, for connoisseurs.
 
