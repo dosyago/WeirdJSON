@@ -36,27 +36,27 @@ function encode(str) {
   for( const char of str ) {
     switch(char) {
       case `"`:
-        code += 'a';		break; 
+        code += 'a';    break; 
       case ':':
-        code += 'b';		break;
+        code += 'b';    break;
       case ',':
-        code += 'c';		break;
+        code += 'c';    break;
       case 'a':
-        code += 'da';		break;
+        code += 'da';   break;
       case 'b':
-        code += 'db';		break;
+        code += 'db';   break;
       case 'c':
-        code += 'dc';		break;
+        code += 'dc';   break;
       case 'd':
-        code += 'dd';		break;
+        code += 'dd';   break;
       case '[':
-        code += 'de';		break;
+        code += 'de';   break;
       case ']':
-        code += 'df';		break;
+        code += 'df';   break;
       case '{':
-        code += 'dg';		break;
+        code += 'dg';   break;
       case '}':
-        code += 'dh';		break;
+        code += 'dh';   break;
       case '-':
         code += 'di';   break;
       case '+':
@@ -64,7 +64,7 @@ function encode(str) {
       case '.':
         code += 'dk';   break;
       default:
-        code += char;		break;
+        code += char;   break;
     }
   }
 
@@ -88,21 +88,21 @@ function decode(code) {
 
       switch(pair) {
         case 'da':
-          str += 'a';		break;
+          str += 'a';   break;
         case 'db':
-          str += 'b';		break;
+          str += 'b';   break;
         case 'dc':
-          str += 'c';		break;
+          str += 'c';   break;
         case 'dd':
-          str += 'd';		break;
+          str += 'd';   break;
         case 'de':
-          str += '[';		break;
+          str += '[';   break;
         case 'df':
-          str += ']';		break;
+          str += ']';   break;
         case 'dg':
-          str += '{';		break;
+          str += '{';   break;
         case 'dh':
-          str += '}';		break;
+          str += '}';   break;
         case 'di':
           str += '-';   break;
         case 'dj':

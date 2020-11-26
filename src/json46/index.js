@@ -16,17 +16,17 @@ const isTypedArray = val => {
 };
 
 const TA = [
-	Int8Array,
-	Uint8Array,
-	Uint8ClampedArray,
-	Int16Array,
-	Uint16Array,
-	Int32Array,
-	Uint32Array,
-	Float32Array,
-	Float64Array,
-	BigInt64Array,
-	BigUint64Array,
+  Int8Array,
+  Uint8Array,
+  Uint8ClampedArray,
+  Int16Array,
+  Uint16Array,
+  Int32Array,
+  Uint32Array,
+  Float32Array,
+  Float64Array,
+  BigInt64Array,
+  BigUint64Array,
 ];
 
 const whatTACode = new Map(TA.map((con, i) => [con, i]));
@@ -34,18 +34,18 @@ const whatTA = new Map(TA.map((con, i) => [i, con]));
 
 // currently we are not using fixed width fields for typed arrays
 const width36TA = {
-	"Int8Array":						3,
-	"Uint8Array":						2,
-	"Uint8ClampedArray":		2,
-	"Int16Array":						Math.ceil(Math.log(2**16)/Math.log(36)) + 1,
-	"Uint16Array":					Math.ceil(Math.log(2**16)/Math.log(36)),
-	"Int32Array":						Math.ceil(Math.log(2**32)/Math.log(36)) + 1,
-	"Uint32Array":					Math.ceil(Math.log(2**32)/Math.log(36)),
+  "Int8Array":            3,
+  "Uint8Array":           2,
+  "Uint8ClampedArray":    2,
+  "Int16Array":           Math.ceil(Math.log(2**16)/Math.log(36)) + 1,
+  "Uint16Array":          Math.ceil(Math.log(2**16)/Math.log(36)),
+  "Int32Array":           Math.ceil(Math.log(2**32)/Math.log(36)) + 1,
+  "Uint32Array":          Math.ceil(Math.log(2**32)/Math.log(36)),
                           // we don't convert floats to base 36
-	"Float32Array":		      11, 	
-	"Float64Array":			    21,	
-	"BigInt64Array":			  Math.ceil(Math.log(2**64)/Math.log(36)) + 1,	
-	"BigUint64Array":		    Math.ceil(Math.log(2**64)/Math.log(36)),		
+  "Float32Array":         11,   
+  "Float64Array":         21, 
+  "BigInt64Array":        Math.ceil(Math.log(2**64)/Math.log(36)) + 1,  
+  "BigUint64Array":       Math.ceil(Math.log(2**64)/Math.log(36)),    
 }
 
 // clever trick to get undefined to work
@@ -275,7 +275,7 @@ function decode(val, that, key) {
 
   function specifyTypedArray(ta) {
     console.log(whatTACode, ta);
-  	return whatTACode.get(ta.constructor).toString(36); 
+    return whatTACode.get(ta.constructor).toString(36); 
   }
 
   function serializeTypedArray(ta) {
@@ -287,51 +287,51 @@ function decode(val, that, key) {
   }
 
 // unicode coding help (from dosybytes.js) 
-	// https://github.com/dosyago/xen/blob/403a8860929450b35b425a5b3cf231ac119b0298/dosybytes.js
+  // https://github.com/dosyago/xen/blob/403a8860929450b35b425a5b3cf231ac119b0298/dosybytes.js
 
-	function bin2hex( binstr ) {
-		return toHex( fromBinary( binstr ) );
-	}
+  function bin2hex( binstr ) {
+    return toHex( fromBinary( binstr ) );
+  }
 
-	function hex2bin( hexstr ) {
-		return toBinary( fromHex( hexstr ) );
-	}
+  function hex2bin( hexstr ) {
+    return toBinary( fromHex( hexstr ) );
+  }
 
-	function toHex( bytes ) {
-		return Array.from( bytes ).reduce( (hs,bv) => hs + pad( bv.toString(36), 4, '0', true ), "" );
-	}
-	function fromHex( hexstr ) {
-		return new Uint32Array( Array.from( hexstr ).reduce( 
-			(pa,c,i) => i % 4 ? (pa[pa.length-1]+=c, pa) : (pa.push(c), pa) ,
-			[]
-		).reduce( 
-			(ba,hn) => (ba.push( parseInt(hn, 36)), ba),
-			[]
-		) );
-	}
+  function toHex( bytes ) {
+    return Array.from( bytes ).reduce( (hs,bv) => hs + pad( bv.toString(36), 4, '0', true ), "" );
+  }
+  function fromHex( hexstr ) {
+    return new Uint32Array( Array.from( hexstr ).reduce( 
+      (pa,c,i) => i % 4 ? (pa[pa.length-1]+=c, pa) : (pa.push(c), pa) ,
+      []
+    ).reduce( 
+      (ba,hn) => (ba.push( parseInt(hn, 36)), ba),
+      []
+    ) );
+  }
 
-	function pad( str, width, char, left, right ) {
-		if( left ) {
-			str = str.padStart(width, char);
-		}
-		if ( right ) {
-			str = str.padEnd(width, char);
-		}
-		return str;
-	}
-	
-	function toBinary(bytes) {
-		const bs = [];
-		for( const byte of bytes ) {
-			bs.push(String.fromCodePoint(byte));
-		}
-		return bs.join('');
-	}
+  function pad( str, width, char, left, right ) {
+    if( left ) {
+      str = str.padStart(width, char);
+    }
+    if ( right ) {
+      str = str.padEnd(width, char);
+    }
+    return str;
+  }
+  
+  function toBinary(bytes) {
+    const bs = [];
+    for( const byte of bytes ) {
+      bs.push(String.fromCodePoint(byte));
+    }
+    return bs.join('');
+  }
 
-	function fromBinary(str) {
-		const b = [];
-		for( const char of str ) {
-			b.push(char.codePointAt(0));
-		}
-		return new Uint32Array(b);
-	}
+  function fromBinary(str) {
+    const b = [];
+    for( const char of str ) {
+      b.push(char.codePointAt(0));
+    }
+    return new Uint32Array(b);
+  }
