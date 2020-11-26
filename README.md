@@ -15,6 +15,10 @@ Simple example:
 'dga002pabdeawacas1dk23edj72adfdh'
 > JSON36.parse('dga002pabdeawacas1dk23edj72adfdh')
 { a: [ NaN, 1.23e+72 ] }
+> JSON36.stringify(489572349583759234857234958237459348734934958374n)
+'aoda0m5nl54p8yz1dcdby79z5ddxhjvv7qexya'
+> JSON36.parse('aoda0m5nl54p8yz1dcdby79z5ddxhjvv7qexya')
+489572349583759234857234958237459348734934958374n
 ```
 
 ## testimoanials
