@@ -7,9 +7,46 @@ const JSON46 = {
 
 const TypedArray = Object.getPrototypeOf(Object.getPrototypeOf(new Uint8Array)).constructor;
 
-const isTypedArray = val => Object.getPrototypeOf(Object.getPrototypeOf(val)).constructor == TypedArray;
+const isTypedArray = val => {
+  try {
+    return Object.getPrototypeOf(Object.getPrototypeOf(val)).constructor == TypedArray;
+  } catch(e) {
+    return false;
+  }
+};
 
-console.log({TypedArray});
+const TA = [
+	Int8Array,
+	Uint8Array,
+	Uint8ClampedArray,
+	Int16Array,
+	Uint16Array,
+	Int32Array,
+	Uint32Array,
+	Float32Array,
+	Float64Array,
+	BigInt64Array,
+	BigUint64Array,
+];
+
+const whatTACode = new Map(TA.map((con, i) => [con, i]));
+const whatTA = new Map(TA.map((con, i) => [i, con]));
+
+// currently we are not using fixed width fields for typed arrays
+const width36TA = {
+	"Int8Array":						3,
+	"Uint8Array":						2,
+	"Uint8ClampedArray":		2,
+	"Int16Array":						Math.ceil(Math.log(2**16)/Math.log(36)) + 1,
+	"Uint16Array":					Math.ceil(Math.log(2**16)/Math.log(36)),
+	"Int32Array":						Math.ceil(Math.log(2**32)/Math.log(36)) + 1,
+	"Uint32Array":					Math.ceil(Math.log(2**32)/Math.log(36)),
+                          // we don't convert floats to base 36
+	"Float32Array":		      11, 	
+	"Float64Array":			    21,	
+	"BigInt64Array":			  Math.ceil(Math.log(2**64)/Math.log(36)) + 1,	
+	"BigUint64Array":		    Math.ceil(Math.log(2**64)/Math.log(36)),		
+}
 
 export default JSON46;
 
@@ -96,25 +133,7 @@ function decode(val) {
   } else if ( val[0] === 'r' ) {
     if ( val.includes(".") ) {
       // there is no "parseFloat(str, radix)", so...
-      // this code came from checking and mentally reversing 
-      // the toString(radix) code for float numbers in v8
-      // here: https://github.com/v8/v8/blob/4b9b23521e6fd42373ebbcb20ebe03bf445494f9/src/conversions.cc#L1227
-      val = val.slice(1);
-      let [whole, part] = val.split('.');
-      let number = parseInt(whole, 36);
-      let fraction = 0;
-      let divisor = 36;
-      for( const unit of part ) {
-        const part = parseInt(unit, 36);
-        fraction += part/divisor;
-        divisor *= 36;
-        // DEBUGj
-        //console.log({fraction, whole, part, unit});
-      }
-      const result = number + fraction;
-      // DEBUG
-      console.log({floatRevive:{result}});
-      return result;
+      return parseFloatFrom36(val);
     } else {
       return parseInt(val.slice(1), 36);
     }
@@ -123,27 +142,91 @@ function decode(val) {
   } else if ( val[0] === 'o' ) {
     // unfortunately there is no parseBigInt function
     const units = val.slice(1); 
+    return parseBigIntFrom36(units);
+  } else if ( val[0] === 'x' ) {
+    const taCode = val[1];
+    const taConstructor = getTypedArrayConstructor(taCode);
+    let values;
+    if ( taConstructor.name.includes('Float') ) {
+      const codedValues = val.slice(2).split('f');
+      values = codedValues.map(cv => parseFloat(cv));
+    } else if ( taConstructor.name.includes('Big') ) {
+      const codedValues = val.slice(2).split('.');
+      values = codedValues.map(cv => parseBigIntFrom36(cv));
+    } else {
+      const codedValues = val.slice(2).split('.');
+      values = codedValues.map(cv => parseInt(cv, 36));
+    }
+
+    const newTa = new taConstructor(values);
+    return newTa;
+  }
+  return hex2bin(val);
+}
+
+// type help
+  function isObject(thing) {
+    if ( Array.isArray(thing) || isTypedArray(thing) ) {
+      return false;
+    } else if ( thing === null ) {
+      return false;
+    } else if ( thing instanceof Function ) {
+      return false;
+    } else {
+      return typeof thing === "object";
+    }
+  }
+
+// parsing big ints from base 36 help
+  function parseBigIntFrom36(units) {
     let n = 0n, sign = 1n;
-    if ( val[0] == '-' ) {
+    if ( units[0] == '-' ) {
       sign = -1n;
     }
     units.split('').forEach(u => n = (n * 36n) + BigInt(parseInt(u,36)));
     return n*sign;
   }
-  return hex2bin(val);
-}
 
-function isObject(thing) {
-  if ( Array.isArray(thing) ) {
-    return false;
-  } else if ( thing === null ) {
-    return false;
-  } else if ( thing instanceof Function ) {
-    return false;
-  } else {
-    return typeof thing === "object";
+// parsing floats from base 36 help
+  function parseFloatFrom36(val) {
+    // this code came from checking and mentally reversing 
+    // the toString(radix) code for float numbers in v8
+    // here: https://github.com/v8/v8/blob/4b9b23521e6fd42373ebbcb20ebe03bf445494f9/src/conversions.cc#L1227
+    val = val.slice(1);
+    let [whole, part] = val.split('.');
+    let number = parseInt(whole, 36);
+    let fraction = 0;
+    let divisor = 36;
+    for( const unit of part ) {
+      const part = parseInt(unit, 36);
+      fraction += part/divisor;
+      divisor *= 36;
+      // DEBUGj
+      //console.log({fraction, whole, part, unit});
+    }
+    const result = number + fraction;
+    // DEBUG
+    console.log({floatRevive:{result}});
+    return result;
   }
-}
+
+// TypedArray help
+  function getTypedArrayConstructor(code) {
+    return whatTA.get(parseInt(code, 36));
+  }
+
+  function specifyTypedArray(ta) {
+    console.log(whatTACode, ta);
+  	return whatTACode.get(ta.constructor).toString(36); 
+  }
+
+  function serializeTypedArray(ta) {
+    // instead of using fixed width fields
+    if ( ta.constructor.name.includes('Float') ) {
+      return ta.map(v => v.toString()).join('f');
+    }
+    return Array.from(ta).map(v => v.toString(36)).join('.');
+  }
 
 // unicode coding help (from dosybytes.js) 
 	// https://github.com/dosyago/xen/blob/403a8860929450b35b425a5b3cf231ac119b0298/dosybytes.js

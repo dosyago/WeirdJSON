@@ -11,6 +11,7 @@ function test() {
     hello: true,
     bigExp: 2.95e77,
     smallExp: 1.93e-81,
+    azza: new Uint8Array([9,10,11]),
     happiness: [
       { object: 999999n },
       "CRIS",
@@ -18,7 +19,8 @@ function test() {
       2234.1231,
       34589358794234233498752345789345n,
       { great: [true, false] },
-      [ "ok" ]
+      [ "ok" ],
+      new Float64Array([1.123e+123, 9.06233419e-94])
     ]
   };
 
@@ -39,4 +41,8 @@ function test() {
   const aObj = JSON46.parse(aStr);
 
   console.log(util.inspect({aObj}, false, null, true));
+
+  const equal = util.isDeepStrictEqual(a, aObj);
+
+  console.assert(equal, "Revived object was not equal");
 }

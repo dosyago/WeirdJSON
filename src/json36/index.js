@@ -1,4 +1,4 @@
-import JSON46 from 'json46';
+import JSON46 from '../json46/index.js';
 
 // alphabet: 0-9a-z
 const JSON36 = {
