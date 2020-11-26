@@ -10,6 +10,9 @@ function test() {
   const a = {
     name: 'Cris',
     age: 36,
+    eo: {},
+    ea: [],
+    wo: {[NaN]:true},
     mmm: undefined,
     code: 3948573458972n,
     hello: true,
