@@ -8,7 +8,7 @@ JSON superset, supporting BigInts, TypedArrays, null, undefined and Symbol.
 
 Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64. HUZZAH!
 
-## testimoniacals
+## testimoanials
 
 ----------
 
@@ -221,7 +221,7 @@ From the tests:
   require('assert').deepStrictEqual(b, bObj); // fine
 ```
 
-## design
+## designagistics
 
 - can I have a JSON format that effortlessly supports Unicode everywhere without any problems?
 - can I have a text and coding format to make everything ASCII for transport that isn't affected by different apis for base64 in node JS and the browser?
