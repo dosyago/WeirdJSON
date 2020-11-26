@@ -1,4 +1,6 @@
-import JSON46 from '../json46/index.js';
+// DEV
+//import JSON46 from '../json46/index.js';
+import JSON46 from 'json46';
 
 // alphabet: 0-9a-z
 const JSON36 = {
