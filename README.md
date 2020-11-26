@@ -224,7 +224,7 @@ From the tests:
 ## design
 
 - can I have a JSON format that effortlessly supports Unicode everywhere without any problems?
-- can I have a text and coding format to make everything ASCII for transport that isn't affected by different apis for base64 and node JS and the browser?
+- can I have a text and coding format to make everything ASCII for transport that isn't affected by different apis for base64 in node JS and the browser?
 - can I have a JSON that supports Bigints and typed arrays as well as null undefined and symbols?
 - is there a encoding to ASCII text that I can easily access in JavaScript in the browser and in node without writing it myself nor importing a dependency?
 - what if I want to say JSON over the telephone or radio?
