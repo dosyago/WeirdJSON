@@ -34,7 +34,7 @@ Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64
 
 ----------
 
-> Hmm, interesting idea. Have you ever heard of Base64? Just curious why you chose to name it 46? There's a specific definition of 46 and it doesn't say anything about JSON. 
+> Hmm, interesting idea. Have you ever heard of Base64? Just curious why you chose to name it 46? And why JSON? There's specific definitions of 46, and JSON, and they don't say anything about this. Did I miss something in the JSON spec?
 > 
 > &mdash; Third top comment on HN :japanese_goblin:
 
