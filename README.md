@@ -184,10 +184,11 @@ From the tests:
   ***/
   
   const revivedA = JSON36.parse(aStr2);
+ 
+  console.log(util.inspect(revivedA, false, null, true)); 
+  // tada
   
-  /***
-  
-  a = {
+  {
     name: 'Cris',
     age: 36,
     mmm: undefined,
@@ -214,7 +215,6 @@ From the tests:
     ]
   };
   
-  ***/
 
   // in node
   require('assert').deepStrictEqual(a, aObj); // fine
