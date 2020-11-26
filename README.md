@@ -69,6 +69,89 @@ Like JSON46, but compressed with LZW, then encoded into the 36ers: a-z, 0-9 plus
 
 Like JSON37, but separated into stanzas separted by `-` dash. Also, NATO phonetic alphabet OK.
 
+## example
+
+From the tests:
+```js
+  const a = {
+    name: 'Cris',
+    age: 36,
+    mmm: undefined,
+    code: 3948573458972n,
+    hello: true,
+    great: null,
+    hi: NaN,
+    xchakka: -Infinity,
+    bigExp: 2.95e77,
+    smallExp: 1.93e-81,
+    azza: new Uint8Array([9,10,11]),
+    happiness: [
+      { object: 999999n, z: NaN, p: Symbol.for("hello-kitty") },
+      null,
+      "CRIS",
+      238947,
+      undefined,
+      NaN,
+      2234.1231,
+      34589358794234233498752345789345n,
+      { great: [true, false] },
+      [ "ok", Infinity ],
+      new Float64Array([1.123e+123, 9.06233419e-94])
+    ]
+  };
+  
+  const aStr = JSON46.stringify(a);
+  
+  /***
+  
+  '{"0032002p0031002t":"001v0036002x0037","002p002v002t":"r10","003100310031":"u","002r0033002s002t":"o1edy6os2k","002w002t003000300033":"a","002v0036002t002p0038":"v","002w002x":"w","003c002r002w002p002z002z002p":"z-","002q002x002v001x003c0034":"s2.95e+77","00370031002p00300030001x003c0034":"s1.93e-81","002p003e003e002p":"x19.a.b","002w002p00340034002x0032002t00370037":[{"0033002q002y002t002r0038":"olflr","003e":"w","0034":"y002w002t0030003000330019002z002x00380038003d"},"v","001v002a0021002b","r54df","u","w","r1q2.4fjcq9k7","o2l5hrv15xy2864k787t7l",{"002v0036002t002p0038":["a","b"]},["0033002z","z+"],"x81.123e+123f9.06233419e-94"]}'
+  
+  ***/
+  
+  const aStr2 = JSON36.stringify(a);
+  
+  /***
+  
+  'dga0032002p0031002taba001v0036002x0037aca002p002v002tabar10aca003100310031abauaca002r0033002s002tabao1eddy6os2kaca002w002t003000300033abadaaca002v0036002t002p0038abavaca002w002xabawaca003dc002r002w002p002z002z002pabazdiaca002q002x002v001x003dc0034abas2dk95edj77aca00370031002p00300030001x003dc0034abas1dk93edi81aca002p003e003e002pabax19dkdadkdbaca002w002p00340034002x0032002t00370037abdedga0033002q002y002t002r0038abaolflraca003eabawaca0034abay002w002t0030003000330019002z002x00380038003ddadhcavaca001v002da0021002dbacar54ddfacauacawacar1q2dk4fjdcq9k7acao2l5hrv15xy2864k787t7lacdga002v0036002t002p0038abdeadaacadbadfdhcdea0033002zacazdjadfcax81dk123edj123f9dk06233419edi94adfdh'
+  
+  ***/
+  
+  const revivedA = JSON36.parse(aStr2);
+  
+  /***
+  
+  a = {
+    name: 'Cris',
+    age: 36,
+    mmm: undefined,
+    code: 3948573458972n,
+    hello: true,
+    great: null,
+    hi: NaN,
+    xchakka: -Infinity,
+    bigExp: 2.95e77,
+    smallExp: 1.93e-81,
+    azza: new Uint8Array([9,10,11]),
+    happiness: [
+      { object: 999999n, z: NaN, p: Symbol.for("hello-kitty") },
+      null,
+      "CRIS",
+      238947,
+      undefined,
+      NaN,
+      2234.1231,
+      34589358794234233498752345789345n,
+      { great: [true, false] },
+      [ "ok", Infinity ],
+      new Float64Array([1.123e+123, 9.06233419e-94])
+    ]
+  };
+  
+  ***/
+  
+
+```
+
 ## design
 
 - can I have a Jason format that effortlessly supports Unicode everywhere without any problems?
