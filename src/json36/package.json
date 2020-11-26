@@ -1,6 +1,6 @@
 {
-  "name": "json43",
-  "version": "1.0.1",
+  "name": "json36",
+  "version": "1.0.0",
   "description": "Weird, encoded JSON for all Unicode, in ASCII",
   "main": "index.js",
   "scripts": {
@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/c9fe/weird-json/issues"
   },
-  "homepage": "https://github.com/c9fe/weird-json#readme"
+  "homepage": "https://github.com/c9fe/weird-json#readme",
+  "dependencies": {
+    "json43": "^1.0.1"
+  }
 }

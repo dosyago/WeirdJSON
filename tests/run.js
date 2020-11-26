@@ -1,5 +1,6 @@
-import JSON41 from '../src/index.js';
+import {JSON43,JSON36,JSON37} from '../src/index.js';
 
+console.log({JSON43,JSON36,JSON37});
 test();
 
 function test() {
@@ -12,7 +13,7 @@ function test() {
 
   console.log({a});
 
-  const aStr = JSON41.stringify(a);
+  const aStr = JSON43.stringify(a);
 
   const bucket = aStr.split('').map(c => c.codePointAt(0).toString(36)).join('');
 
@@ -22,7 +23,7 @@ function test() {
 
   console.log({aStr});
 
-  const aObj = JSON41.parse(aStr);
+  const aObj = JSON43.parse(aStr);
 
   console.log({aObj});
 }
