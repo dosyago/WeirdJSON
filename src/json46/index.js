@@ -1,10 +1,11 @@
-const JSON43 = {
+// alphabet: 0-9a-z":,[]{}-+.
+const JSON46 = {
   parse,
   stringify,
   clone
 };
 
-export default JSON43;
+export default JSON46;
 
 export function clone(thing) {
   return parse(stringify(thing));
@@ -68,6 +69,10 @@ function encode(val) {
   } else if ( val === false ) {
     return 'b';
   } else if ( typeof val === "number" ) {
+    const strVal = val.toString();
+    if ( strVal.includes('e') ) {
+      return `s${strVal}.padStart(3,'0')`;
+    }
     return `r${val.toString(36).padStart(3,'0')}`;
   }
   return bin2hex(val);
@@ -84,6 +89,8 @@ function decode(val) {
     } else {
       return parseInt(val.slice(1), 36);
     }
+  } else if ( val[0] === 's' && val.length >= 4 ) {
+    return parseFloat(val.slice(1));
   } else if ( val[0] === 'o' && val.length >= 4 ) {
     // unfortunately there is no parseBigInt function
     const units = val.slice(1); 
