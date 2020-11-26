@@ -127,7 +127,7 @@ function encode(val) {
   } else if ( Number.isNaN(val) ) {
     return `w`;
   } else if ( val === Infinity || val === -Infinity ) {
-    return `z${
+    return `z${Math.sign(val) == 1 ? '+' : '-' }`;
   } else if ( typeof val === "bigint" ) {
     return `o${val.toString(36)}`;
   } else if ( val === true ) {
@@ -153,6 +153,8 @@ function decode(val, that, key) {
     return null;
   } else if ( val === 'w' ) {
     return NaN;
+  } else if ( val[0] === 'z' ) {
+    return val[1] === '+' ? Infinity : -Infinity;
   } else if ( val === 'a' ) {
     return true;
   } else if ( val === 'b' ) {

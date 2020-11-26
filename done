@@ -1,2 +1,3 @@
+- add support for NaN, Infinity, null and undefined
 - add typedarray support
 - support floating point exponent notification
