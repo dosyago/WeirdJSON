@@ -37,7 +37,7 @@ Simple example:
 
 ----------
 
-> What's the point of this? I mean it's clearly a joke, but... Why? Oh yeah, let's invent a new incompatible standard. Great idea. Just a reminder to everyone, don't use this in production! 
+> What's the point of this? I don't care what anyone claims, it's clearly a joke, but... Why? Oh yeah, let's invent a new incompatible standard. Great idea. Repo should at least have a warning to not use in production! 
 >
 > &mdash; Top comment on HN :pout:
 
