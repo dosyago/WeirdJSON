@@ -8,7 +8,7 @@ JSON superset, supporting BigInts, TypedArrays, null, undefined and Symbol.
 
 Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64. HUZZAH!
 
-## testimonials
+## testimoniacals
 
 ----------
 
