@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/c9fe/weird-json#readme",
   "dependencies": {
-    "json43": "^1.0.1"
+    "json46": "^1.0.2"
   }
 }

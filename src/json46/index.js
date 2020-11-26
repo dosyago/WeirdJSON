@@ -12,6 +12,8 @@ export function clone(thing) {
 }
 
 export function parse(text, reviver = a => a) {
+  // base 36 we don't care about caps! OO RAH
+  text = text.toLocaleLowerCase();
   const result = JSON.parse(text, weirdReviver(reviver));
   return result;
 }
@@ -85,7 +87,26 @@ function decode(val) {
     return false;
   } else if ( val[0] === 'r' && val.length >= 4 ) {
     if ( val.includes(".") ) {
-      return parseFloat(val.slice(1), 36);
+      // there is no "parseFloat(str, radix)", so...
+      // this code came from checking and mentally reversing 
+      // the toString(radix) code for float numbers in v8
+      // here: https://github.com/v8/v8/blob/4b9b23521e6fd42373ebbcb20ebe03bf445494f9/src/conversions.cc#L1227
+      val = val.slice(1);
+      let [whole, part] = val.split('.');
+      let number = parseInt(whole, 36);
+      let fraction = 0;
+      let divisor = 36;
+      for( const unit of part ) {
+        const part = parseInt(unit, 36);
+        fraction += part/divisor;
+        divisor *= 36;
+        // DEBUGj
+        //console.log({fraction, whole, part, unit});
+      }
+      const result = number + fraction;
+      // DEBUG
+      console.log({floatRevive:{result}});
+      return result;
     } else {
       return parseInt(val.slice(1), 36);
     }

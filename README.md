@@ -22,7 +22,7 @@ A menagerie of strange, encoded JSONs, for connoisseurs.
 ## get to know the current residents
 
 
-### JSON43
+### JSON46
 
 Forged in the fires of Mordor, the hand-polished 43 runic sigils of our exclusive 43 line cover all your possible use cases. You can make a Chinese JSON, an emoji JSON, and then safely protect it and in the darkness bind it so only 36 alphanumerics plus 7 unique Jason symbols are present.
 
@@ -33,11 +33,11 @@ Features:
 
 ### JSON36
 
-Like JSON43, but encoded again into the 36ers: a-z, 0-9
+Like JSON46, but encoded again into the 36ers: a-z, 0-9
 
 ### JSON37
 
-Like JSON43, t compressed with LZW, then encoded into the 36ers: a-z, 0-9 plus `.`
+Like JSON46, t compressed with LZW, then encoded into the 36ers: a-z, 0-9 plus `.`
 
 ## design
 

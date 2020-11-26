@@ -1,10 +1,10 @@
-const JSON43 = {
+const JSON46 = {
   parse,
   stringify,
   clone
 };
 
-export default JSON43;
+export default JSON46;
 
 export function clone(thing) {
   return parse(stringify(thing));

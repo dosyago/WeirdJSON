@@ -1,5 +1,6 @@
-import JSON43 from 'json43';
+import JSON46 from 'json46';
 
+// alphabet: 0-9a-z
 const JSON36 = {
   parse,
   stringify,
@@ -13,51 +14,106 @@ export function clone(thing) {
 }
 
 export function parse(code, reviver = a => a) {
+  // ignore caps of course!
+  code = code.toLocaleLowerCase();
   const text = decode(code);
-  const result = JSON43.parse(text, reviver);
+  const result = JSON46.parse(text, reviver);
   return result;
 }
 
 export function stringify(value, replacer = b => b, space = 0) {
-  const result = JSON43.stringify(value, replacer, space);
+  const result = JSON46.stringify(value, replacer, space);
   const code = encode(result);
   return code;
 }
 
-function encode(val) {
-  if ( typeof val === "bigint" ) {
-    return `o${val.toString(36).padStart(3,'0')}`;
-  } else if ( val === true ) {
-    return 'a';
-  } else if ( val === false ) {
-    return 'b';
-  } else if ( typeof val === "number" ) {
-    return `r${val.toString(36).padStart(3,'0')}`;
+function encode(str) {
+  let code = '';
+
+  for( const char of str ) {
+    switch(char) {
+      case `"`:
+        code += 'a';		break; 
+      case ':':
+        code += 'b';		break;
+      case ',':
+        code += 'c';		break;
+      case 'a':
+        code += 'da';		break;
+      case 'b':
+        code += 'db';		break;
+      case 'c':
+        code += 'dc';		break;
+      case 'd':
+        code += 'dd';		break;
+      case '[':
+        code += 'de';		break;
+      case ']':
+        code += 'df';		break;
+      case '{':
+        code += 'dg';		break;
+      case '}':
+        code += 'dh';		break;
+      case '-':
+        code += 'di';   break;
+      case '+':
+        code += 'dj';   break;
+      case '.':
+        code += 'dk';   break;
+      default:
+        code += char;		break;
+    }
   }
-  return bin2hex(val);
+
+  return code;
 }
 
-function decode(val) {
-  if ( val === 'a' ) {
-    return true;
-  } else if ( val === 'b' ) {
-    return false;
-  } else if ( val[0] === 'r' && val.length >= 4 ) {
-    if ( val.includes(".") ) {
-      return parseFloat(val.slice(1), 36);
+function decode(code) {
+  let str = '';
+
+  for( let i = 0; i < code.length; i++ ) {
+    const char = code[i];
+    if ( char == 'a' ) {
+      str += `"`;
+    } else if ( char == 'b' ) {
+      str += ':';
+    } else if ( char == 'c' ) {
+      str += ',';
+    } else if ( char == 'd' ) {
+      i++;
+      const pair = char + code[i];
+
+      switch(pair) {
+        case 'da':
+          str += 'a';		break;
+        case 'db':
+          str += 'b';		break;
+        case 'dc':
+          str += 'c';		break;
+        case 'dd':
+          str += 'd';		break;
+        case 'de':
+          str += '[';		break;
+        case 'df':
+          str += ']';		break;
+        case 'dg':
+          str += '{';		break;
+        case 'dh':
+          str += '}';		break;
+        case 'di':
+          str += '-';   break;
+        case 'dj':
+          str += '+';   break;
+        case 'dk':
+          str += '.';   break;
+        default: 
+          // and...that's an error
+          // shhhh
+      }
     } else {
-      return parseInt(val.slice(1), 36);
+      str += char;
     }
-  } else if ( val[0] === 'o' && val.length >= 4 ) {
-    // unfortunately there is no parseBigInt function
-    const units = val.slice(1); 
-    let n = 0n, sign = 1n;
-    if ( val[0] == '-' ) {
-      sign = -1n;
-    }
-    units.split('').forEach(u => n = (n * 36n) + BigInt(parseInt(u,36)));
-    return n*sign;
   }
-  return hex2bin(val);
+  return str;
 }
 

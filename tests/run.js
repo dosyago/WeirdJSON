@@ -1,6 +1,6 @@
-import {JSON43,JSON36,JSON37} from '../src/index.js';
+import util from 'util';
+import {JSON46,JSON36,JSON37} from '../src/index.js';
 
-console.log({JSON43,JSON36,JSON37});
 test();
 
 function test() {
@@ -8,22 +8,33 @@ function test() {
     name: 'Cris',
     age: 36,
     code: 3948573458972n,
-    hello: true
+    hello: true,
+    happiness: [
+      { object: 999999n },
+      "CRIS",
+      238947,
+      2234.1231,
+      34589358794234233498752345789345n,
+      { great: [true, false] },
+      [ "ok" ]
+    ]
   };
 
   console.log({a});
 
-  const aStr = JSON43.stringify(a);
+  const aStr = JSON46.stringify(a);
 
-  const bucket = aStr.split('').map(c => c.codePointAt(0).toString(36)).join('');
+  const bucket = JSON36.stringify(a);
 
   console.log({bucket});
+
+  console.log({unbucket: JSON36.parse(bucket)});
 
   console.log({converted: JSON.parse(aStr)});
 
   console.log({aStr});
 
-  const aObj = JSON43.parse(aStr);
+  const aObj = JSON46.parse(aStr);
 
-  console.log({aObj});
+  console.log(util.inspect({aObj}, false, null, true));
 }
