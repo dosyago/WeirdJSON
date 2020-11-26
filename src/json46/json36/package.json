@@ -1,0 +1,32 @@
+{
+  "name": "json36",
+  "version": "1.0.1",
+  "description": "Weird, encoded JSON for all Unicode, in ASCII",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/c9fe/weird-json.git"
+  },
+  "keywords": [
+    "JSON",
+    "Unicode",
+    "encoder",
+    "ascii85",
+    "base64",
+    "uuencode",
+    "base36",
+    "NATO"
+  ],
+  "author": "@dosy",
+  "license": "Artistic-1.0",
+  "bugs": {
+    "url": "https://github.com/c9fe/weird-json/issues"
+  },
+  "homepage": "https://github.com/c9fe/weird-json#readme",
+  "dependencies": {
+    "json46": "latest"
+  }
+}
