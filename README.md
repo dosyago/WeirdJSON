@@ -2,6 +2,10 @@
 
 A menagerie of strange, encoded JSONs, for connoisseurs.
 
+JSON superset, supporting BigInts, TypedArrays, null, undefined and Symbol.
+
+Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64.
+
 ## testimonials
 
 > Go where no Unicode JSON has gone before. Go where only ASCII can!
