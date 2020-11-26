@@ -44,7 +44,7 @@ Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64
 
 ## get to know the current JSONs-in-residence
 
-The merry little band of tricksters: *JSON46*, *JSON36*, *JSON37* and ever-affable *JSON38*
+The merry little band of tricksters: *JSON46*, *JSON36*, *JSON37* and the ever-affable, *JSON38*
 
 ### JSON46
 
