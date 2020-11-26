@@ -73,7 +73,7 @@ function encode(val) {
   } else if ( typeof val === "number" ) {
     const strVal = val.toString();
     if ( strVal.includes('e') ) {
-      return `s${strVal}.padStart(3,'0')`;
+      return `s${strVal.padStart(3,'0')}`;
     }
     return `r${val.toString(36).padStart(3,'0')}`;
   }
