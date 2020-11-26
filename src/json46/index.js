@@ -132,7 +132,7 @@ function encode(val) {
     return `z${Math.sign(val) == 1 ? '+' : '-' }`;
   } else if ( to === "symbol" ) {
     const key = Symbol.keyFor(val);
-    console.log({key});
+    //console.log({key});
     if ( key ) {
       return `y${bin2hex(key)}`;
     } else {
@@ -162,7 +162,7 @@ function encode(val) {
     }
     return `r${val.toString(36)}`;
   } else if ( isTypedArray(val) ) {
-    return `x${specifyTypedArray(val)}${serializeTypedArray(val).padStart(2,'-.')}`; 
+    return `x${specifyTypedArray(val)}${serializeTypedArray(val)}`; 
   }
   return bin2hex(val);
 }
@@ -206,15 +206,17 @@ function decode(val, that, key) {
     const taConstructor = getTypedArrayConstructor(taCode);
     let values;
     if ( taConstructor.name.includes('Float') ) {
-      const codedValues = val.slice(2).split('f');
+      const codedValues = val.slice(2).split('f').filter(l => l.length);
       values = codedValues.map(cv => parseFloat(cv));
     } else if ( taConstructor.name.includes('Big') ) {
-      const codedValues = val.slice(2).split('.');
+      const codedValues = val.slice(2).split('.').filter(l => l.length);
       values = codedValues.map(cv => parseBigIntFrom36(cv));
     } else {
-      const codedValues = val.slice(2).split('.');
+      const codedValues = val.slice(2).split('.').filter(l => l.length);
       values = codedValues.map(cv => parseInt(cv, 36));
     }
+
+    //console.log({val,values});
 
     const newTa = new taConstructor(values);
     return newTa;
@@ -264,7 +266,7 @@ function decode(val, that, key) {
     }
     const result = number + fraction;
     // DEBUG
-    console.log({floatRevive:{result}});
+    //console.log({floatRevive:{result}});
     return result;
   }
 
@@ -274,16 +276,20 @@ function decode(val, that, key) {
   }
 
   function specifyTypedArray(ta) {
-    console.log(whatTACode, ta);
+    //console.log(whatTACode, ta);
     return whatTACode.get(ta.constructor).toString(36); 
   }
 
   function serializeTypedArray(ta) {
     // instead of using fixed width fields
+    let res;
     if ( ta.constructor.name.includes('Float') ) {
-      return ta.map(v => v.toString()).join('f');
+      res = ta.map(v => v.toString()).join('f');
+    } else {
+      res = Array.from(ta).map(v => v.toString(36)).join('.');
     }
-    return Array.from(ta).map(v => v.toString(36)).join('.');
+    //console.log({res});
+    return res;
   }
 
 // unicode coding help (from dosybytes.js) 

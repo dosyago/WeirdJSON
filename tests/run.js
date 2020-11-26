@@ -13,6 +13,7 @@ function test() {
     mmm: undefined,
     code: 3948573458972n,
     hello: true,
+    xy: new Uint16Array(),
     great: null,
     hi: NaN,
     xchakka: -Infinity,
