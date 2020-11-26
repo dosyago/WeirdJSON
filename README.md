@@ -38,18 +38,22 @@ Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64
 > 
 > &mdash; Third top comment on HN :japanese_goblin:
 
+----------
+
 ## get to know the current JSONs-in-residence
 
 The merry little band of tricksters: *JSON46*, *JSON36*, *JSON37* and ever-affable *JSON38*
 
 ### JSON46
 
-Forged in the fires of Mordor, the hand-polished 46 runic sigils of our exclusive 46 line cover all your possible use cases. You can make a Chinese JSON, an emoji JSON, and then safely protect it and in the darkness bind it so only 36 alphanumerics plus 7 unique Jason symbols are present.
+Forged in the fires of Mordor, the hand-polished 46 runic sigils of our exclusive 46 line cover all your possible use cases. You can make a Chinese JSON, an emoji JSON, and then safely protect it and in the darkness bind it so only 36 alphanumerics plus 7 unique JSON structural symbols, plus 3 highly-coveted numeric specifiers (`e`, `+` and `-`) are present.  
 
 Features:
 
 - alphabet: a-z, 0-9, `:,"[]{}.+-`
 - JSON superset, supports BigInt, TypedArrays, null, undefined and Symbol
+
+Complete ASCII. Complete URL safe. But not safe enough? Try *JSON36*. :tada:
 
 ### JSON36
 
