@@ -73,6 +73,28 @@ Like JSON37, but separated into stanzas separted by `-` dash. Also, NATO phoneti
 
 From the tests:
 ```js
+  // simple example
+
+  const b = {
+    hi: "💉💎 or 👦🏻👓⚡嗨，我唔係Gpt - 3寫嘅。 你叫咩名呀?"
+  };
+  const bStr = JSON46.stringify(b);
+  const bStr2 = JSON36.stringify(b);
+  const bObj = JSON36.parse(bStr2);
+
+  /***
+
+  {
+    bStr: '{"002w002x":"2qvd2qvi000w00330036000w2que2qrf2qtv07mp0gyw1edo0jdd0gt00fr6001z00340038000w0019000w001f0i5n0gzp09he000w0fog0gkr0gq10glp0gn4001r"}',
+    bStr2: 'dga002w002xaba2qvdd2qvi000w00330036000w2que2qrf2qtv07mp0gyw1eddo0jdddd0gt00fr6001z00340038000w0019000w001f0i5n0gzp09he000w0fog0gkr0gq10glp0gn4001radh'
+  }
+
+  { bObj: { hi: '💉💎 or 👦🏻👓⚡嗨，我唔係Gpt - 3寫嘅。 你叫咩名呀?' } }
+
+  ***/
+
+  // more involved example
+
   const a = {
     name: 'Cris',
     age: 36,
@@ -193,8 +215,10 @@ From the tests:
   };
   
   ***/
-  
 
+  // in node
+  require('assert').deepStrictEqual(a, aObj); // fine
+  require('assert').deepStrictEqual(b, bObj); // fine
 ```
 
 ## design

@@ -34,9 +34,26 @@ function test() {
     ]
   };
 
+  const b = {
+    hi: "💉💎 or 👦🏻👓⚡嗨，我唔係Gpt - 3寫嘅。 你叫咩名呀?"
+  };
+
   console.log(util.inspect({a}, false, null, true));
 
   const aStr = JSON46.stringify(a);
+
+  const bStr = JSON46.stringify(b);
+  const bStr2 = JSON36.stringify(b);
+
+  console.log({bStr, bStr2});
+
+  const bObj = JSON36.parse(bStr2);
+
+  const bequal = util.isDeepStrictEqual(b, bObj);
+
+  console.log({bObj});
+
+  console.assert(bequal, "Object b did not serialize");
 
   const bucket = JSON36.stringify(a);
 
