@@ -10,7 +10,7 @@ Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64
 
 Simple example:
 
-```repl
+```js
 > JSON36.stringify({a:[NaN, 1.23e72]})
 'dga002pabdeawacas1dk23edj72adfdh'
 > JSON36.parse('dga002pabdeawacas1dk23edj72adfdh')
