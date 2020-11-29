@@ -10,6 +10,8 @@ function test() {
   const a = {
     name: 'Cris',
     age: 36,
+    map: new Map([[1,2],[3,4],[5, 'a'], [{6:true}, {seven:[8]}]]),
+    set: new Set([1,2,3,4,'5','a']),
     eo: {},
     ea: [],
     wo: {[NaN]:true},

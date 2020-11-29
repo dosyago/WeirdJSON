@@ -1,3 +1,5 @@
+import JSON36 from '../json36/index.js';
+
 // alphabet: 0-9a-z":,[]{}-+.
 const JSON46 = {
   parse,
@@ -163,6 +165,10 @@ function encode(val) {
     return `r${val.toString(36)}`;
   } else if ( isTypedArray(val) ) {
     return `x${specifyTypedArray(val)}${serializeTypedArray(val)}`; 
+  } else if ( val instanceof Map ) {
+    return `p${serializeMapOrSet(val)}`;
+  } else if ( val instanceof Set ) {
+    return `q${serializeMapOrSet(val)}`;
   }
   return bin2hex(val);
 }
@@ -220,6 +226,14 @@ function decode(val, that, key) {
 
     const newTa = new taConstructor(values);
     return newTa;
+  } else if ( val[0] === 'p' ) {
+    val = val.slice(1);
+    const map = new Map(JSON36.parse(val));
+    return map;
+  } else if ( val[0] === 'q' ) {
+    val = val.slice(1);
+    const set = new Set(JSON36.parse(val));
+    return set;
   }
   return hex2bin(val);
 }
@@ -227,6 +241,8 @@ function decode(val, that, key) {
 // type help
   function isObject(thing) {
     if ( Array.isArray(thing) || isTypedArray(thing) ) {
+      return false;
+    } else if ( thing instanceof Map || thing instanceof Set ) {
       return false;
     } else if ( thing === null ) {
       return false;
@@ -261,7 +277,7 @@ function decode(val, that, key) {
       const part = parseInt(unit, 36);
       fraction += part/divisor;
       divisor *= 36;
-      // DEBUGj
+      // DEBUG
       //console.log({fraction, whole, part, unit});
     }
     const result = number + fraction;
@@ -290,6 +306,12 @@ function decode(val, that, key) {
     }
     //console.log({res});
     return res;
+  }
+
+  function serializeMapOrSet(h) {
+    const entries = h instanceof Map ? [...h.entries()] : [...h.keys()];
+    const serialized = JSON36.stringify(entries);
+    return serialized;
   }
 
 // unicode coding help (from dosybytes.js) 

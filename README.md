@@ -297,7 +297,7 @@ We aim for equality based on [assert.deepStrictEqual](https://nodejs.org/api/ass
 - [x] add typedarray support
 - [x] support floating point exponent notification
 - [x] add symbol support
-- [ ] add support for Map and Set
+- [x] add support for Map and Set
 - [ ] implement json37, and json38
 - [ ] Add support for WeakMap, WeakSet
 - [ ] Add support for Date
