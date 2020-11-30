@@ -1,5 +1,5 @@
-import JSON36 from '../json36/index.js';
-import {encode as encode36,decode as decode36} from '../json36/index.js';
+import JSON36 from 'json36';
+import {encode as encode36,decode as decode36} from 'json36';
 
 
 // alphabet: 0-9a-z":,[]{}-+.
