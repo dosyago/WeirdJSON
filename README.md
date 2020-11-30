@@ -299,6 +299,7 @@ We aim for equality based on [assert.deepStrictEqual](https://nodejs.org/api/ass
 - [x] add symbol support
 - [x] add support for Map and Set
 - [x] Add support for Date
+- [ ] optimize speed
 - [ ] implement json37, and json38
 
 ## limitationisms
