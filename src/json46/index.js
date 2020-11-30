@@ -1,4 +1,6 @@
 import JSON36 from '../json36/index.js';
+import {encode as encode36,decode as decode36} from '../json36/index.js';
+
 
 // alphabet: 0-9a-z":,[]{}-+.
 const JSON46 = {
@@ -149,7 +151,7 @@ function encode(val) {
     **/
       console.warn("Error on value of type function", val, val.toString());
       //throw new TypeError(`Sorry, we do not support functions because even tho they can be converted to string values and serialized, a function has a scope, and this scope cannot currently be serialized. If you want to serialize functions, please indicate they are referentially transparent by using the global symbol with key "[[referentially-transparent]]" to set a property on the function to true`);
-      throw new TypeError(`Sorry we do not support functions`);
+      throw new TypeError(`Sorry, we do not support functions because even tho they can be converted to string values and serialized, a function has a scope, and this scope cannot currently be serialized.`);
     /**}**/
   } else if ( to === "bigint" ) {
     return `o${val.toString(36)}`;
@@ -169,6 +171,10 @@ function encode(val) {
     return `p${serializeMapOrSet(val)}`;
   } else if ( val instanceof Set ) {
     return `q${serializeMapOrSet(val)}`;
+  } else if ( val instanceof WeakMap || val instanceof WeakSet ) {
+    throw new TypeError(`Sorry we do not support WeakMap or WeakSet. The reason is that even tho the values can be serialized, it does not make sense to re-instantiate them because values in such collections only exist in those collections as long as they have references elsewhere in your program. When reinstantiating values from a WeakMap or WeakSet, these values will not have any other references in your code, so it does not make sense for them to be collected in a WeakSet or WeakMap. When our reinstantiation code exits, the values will not longer be guaranteed to exist in the WeakSet or WeakMap. Explore if you can use a Set or Map instead.`);
+  } else if ( val instanceof Date ) {
+    return `t${serializeDate(val)}`; 
   }
   return bin2hex(val);
 }
@@ -186,10 +192,12 @@ function decode(val, that, key) {
     return true;
   } else if ( val === 'b' ) {
     return false;
+  /*
   } else if ( val[0] === 't' ) { 
     console.warn("Error on value of intended type function", val);
     throw new TypeError(`Sorry we do not support functions`);
     //return eval(hex2bin(val.slice(1)));
+  */
   } else if ( val[0] === 'y' ) {
     const key = hex2bin(val.slice(1));
     const symbol = Symbol.for(key);
@@ -234,6 +242,11 @@ function decode(val, that, key) {
     val = val.slice(1);
     const set = new Set(JSON36.parse(val));
     return set;
+  } else if ( val[0] === 't' ) {
+    val = val.slice(1);
+    const isoString = decode36(val);
+    const date = new Date(isoString);
+    return date;
   }
   return hex2bin(val);
 }
@@ -242,7 +255,7 @@ function decode(val, that, key) {
   function isObject(thing) {
     if ( Array.isArray(thing) || isTypedArray(thing) ) {
       return false;
-    } else if ( thing instanceof Map || thing instanceof Set ) {
+    } else if ( thing instanceof Map || thing instanceof Set || thing instanceof WeakMap || thing instanceof WeakSet ) {
       return false;
     } else if ( thing === null ) {
       return false;
@@ -306,6 +319,10 @@ function decode(val, that, key) {
     }
     //console.log({res});
     return res;
+  }
+
+  function serializeDate(d) {
+    return encode36(d.toISOString());
   }
 
   function serializeMapOrSet(h) {

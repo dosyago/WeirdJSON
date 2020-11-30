@@ -8,8 +8,10 @@ function test() {
 
   func[Symbol.for('[[referentially-transparent]]')] = true;
   const a = {
+    now: new Date,
     name: 'Cris',
     age: 36,
+    /* wsm: [new WeakSet(), new WeakMap()], */
     map: new Map([[1,2],[3,4],[5, 'a'], [{6:true}, {seven:[8]}]]),
     set: new Set([1,2,3,4,'5','a']),
     eo: {},

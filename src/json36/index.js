@@ -30,7 +30,7 @@ export function stringify(value, replacer = b => b, space = 0) {
   return code;
 }
 
-function encode(str) {
+export function encode(str) {
   let code = '';
 
   for( const char of str ) {
@@ -71,7 +71,7 @@ function encode(str) {
   return code;
 }
 
-function decode(code) {
+export function decode(code) {
   let str = '';
 
   for( let i = 0; i < code.length; i++ ) {
