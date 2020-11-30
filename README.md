@@ -298,5 +298,15 @@ We aim for equality based on [assert.deepStrictEqual](https://nodejs.org/api/ass
 - [x] support floating point exponent notification
 - [x] add symbol support
 - [x] add support for Map and Set
-- [ ] Add support for Date
+- [x] Add support for Date
 - [ ] implement json37, and json38
+
+## limitationisms
+
+NO support for:
+
+- WeakSet nor WeakMap, because values collected in these will have no other references on revivial, and so will not make sense to be in WeakMap nor WeakSet, and will not be guaranteed to be in there. Explore if you can use Map or Set instead.
+- unregistered Symbols. Because these will fail the equality test (DeepStrictEquality), by design of Symbol. Use registered Symbol's (Symbol.for) instead.
+- Functions. Because scope cannot be serialized in JavaScript at this time, and also because functions fail the equality test (DeepStrictEquality)
+
+

@@ -2,6 +2,16 @@ import JSON36 from 'json36';
 import {encode as encode36,decode as decode36} from 'json36';
 
 
+// for Date
+class WrapDate {
+  constructor(dateObj) {
+    if ( !(dateObj instanceof Date) ) {
+      throw new Error(`Date only!`);
+    }
+    this.$ = dateObj;
+  }
+}
+
 // alphabet: 0-9a-z":,[]{}-+.
 const JSON46 = {
   parse,
@@ -107,6 +117,11 @@ function encodeKeys(obj) {
   for( const key of Object.keys(obj) ) {
     const encodedKey = encode(key);
     newObj[encodedKey] = obj[key];
+    if ( newObj[encodedKey] instanceof Date ) {
+      // this is necessary because Date is processed specially
+      // presumable because it has a toJSON method
+      newObj[encodedKey] = new WrapDate(obj[key]);
+    }
   }
   return newObj;
 }
@@ -173,8 +188,8 @@ function encode(val) {
     return `q${serializeMapOrSet(val)}`;
   } else if ( val instanceof WeakMap || val instanceof WeakSet ) {
     throw new TypeError(`Sorry we do not support WeakMap or WeakSet. The reason is that even tho the values can be serialized, it does not make sense to re-instantiate them because values in such collections only exist in those collections as long as they have references elsewhere in your program. When reinstantiating values from a WeakMap or WeakSet, these values will not have any other references in your code, so it does not make sense for them to be collected in a WeakSet or WeakMap. When our reinstantiation code exits, the values will not longer be guaranteed to exist in the WeakSet or WeakMap. Explore if you can use a Set or Map instead.`);
-  } else if ( val instanceof Date ) {
-    return `t${serializeDate(val)}`; 
+  } else if ( val instanceof WrapDate ) {
+    return `t${serializeDate(val.$)}`; 
   }
   return bin2hex(val);
 }
@@ -260,6 +275,8 @@ function decode(val, that, key) {
     } else if ( thing === null ) {
       return false;
     } else if ( thing instanceof Function ) {
+      return false;
+    } else if ( thing instanceof WrapDate ) {
       return false;
     } else {
       return typeof thing === "object";
