@@ -260,18 +260,10 @@ Them all:
 $ npm i --save weird-json
 ```
 
-Or just one:
-
-```console
-$ npm i --save json36
-```
-
 ## usagisms
 
 ```js
-import {JSON36} from 'weird-json';
-import JSON46 from 'json46';
-import json37 from 'json37';
+import {JSON36, JSON46} from 'weird-json';
 ```
 
 ## technicalisters
@@ -299,8 +291,8 @@ We aim for equality based on [assert.deepStrictEqual](https://nodejs.org/api/ass
 - [x] add symbol support
 - [x] add support for Map and Set
 - [x] Add support for Date
-- [ ] optimize speed
 - [ ] implement json37, and json38
+- [ ] optimize speed
 
 ## limitationisms
 
