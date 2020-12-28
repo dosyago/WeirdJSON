@@ -1,5 +1,5 @@
 import util from 'util';
-import {JSON46,JSON36,JSON37} from '../src/index.js';
+import {JSON46,JSON36,JSON37,JSON64} from '../src/index.js';
 
 test();
 
@@ -49,11 +49,11 @@ function test() {
   console.log(util.inspect({a}, false, null, true));
 
   const aStr = JSON46.stringify(a);
-
   const bStr = JSON46.stringify(b);
   const bStr2 = JSON36.stringify(b);
+  const dStr = JSON64.stringify(b);
 
-  console.log({bStr, bStr2});
+  console.log({aStr, bStr, bStr2, dStr});
 
   const bObj = JSON36.parse(bStr2);
 
@@ -65,9 +65,13 @@ function test() {
 
   const bucket = JSON36.stringify(a);
 
-  console.log({bucket});
+  const b64 = JSON64.stringify(a);
+
+  console.log({bucket, b64});
 
   console.log({unbucket: JSON36.parse(bucket)});
+
+  console.log({unb64: JSON64.parse(b64)});
 
   console.log({converted: JSON.parse(aStr)});
 
@@ -78,6 +82,8 @@ function test() {
   console.log(util.inspect({aObj}, false, null, true));
 
   const equal = util.isDeepStrictEqual(a, aObj);
+
+  console.log({dObj: JSON64.parse(dStr)});
 
   console.assert(equal, "Revived object was not equal");
 }

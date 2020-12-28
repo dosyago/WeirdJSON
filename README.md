@@ -6,7 +6,12 @@ A menagerie of strange, encoded JSONs, for connoisseurs.
 
 JSON superset, supporting BigInts, TypedArrays, null, undefined and Symbol.
 
-Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64. HUZZAH!
+Comes in a variety of flavors:
+
+- JSON46 - Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64. HUZZAH!
+- JSON36 - JSON46 but coded down to (case-insensitive) A-Z0-9
+- JSON64 - JSON46 but encoded with irradix to a special base64
+
 
 Simple example:
 

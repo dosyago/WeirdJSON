@@ -1,5 +1,7 @@
-import JSON36 from 'json36';
-import {encode as encode36,decode as decode36} from 'json36';
+//import JSON36 from 'json36';
+//import {encode as encode36,decode as decode36} from 'json36';
+import JSON36 from '../json36/index.js';
+import {encode as encode36,decode as decode36} from '../json36/index.js';
 
 
 // for Date
@@ -71,34 +73,36 @@ export function clone(thing) {
   return parse(stringify(thing));
 }
 
-export function parse(text, reviver = a => a) {
-  // base 36 we don't care about caps! OO RAH
-  text = text.toLocaleLowerCase();
-  const result = JSON.parse(text, weirdReviver(reviver));
+export function parse(text, reviver = a => a, asciiOnly = true) {
+  if ( asciiOnly ) {
+    // base 36/46 we don't care about caps! OO RAH
+    text = text.toLocaleLowerCase();
+  }
+  const result = JSON.parse(text, weirdReviver(reviver, asciiOnly));
   return result;
 }
 
-export function stringify(value, replacer = b => b, space = 0) {
-  const result = JSON.stringify(value, weirdReplacer(replacer), space);
+export function stringify(value, replacer = b => b, space = 0, asciiOnly = true) {
+  const result = JSON.stringify(value, weirdReplacer(replacer, asciiOnly), space);
   return result;
 }
 
-function weirdReplacer(replacer) {
+function weirdReplacer(replacer, asciiOnly = true) {
   return function (key, value) {
     if ( isObject(value) ) {
-      value = encodeKeys(value);
+      value = encodeKeys(value, asciiOnly);
     } else if ( ! Array.isArray(value) ) {
-      value = encode(value);
+      value = encode(value, asciiOnly);
     }
     return value;
   };
 }
 
-function weirdReviver(reviver) {
+function weirdReviver(reviver, asciiOnly = true) {
   return function (key, value) {
     const that = this;
     if ( isObject(value) ) {
-      value = decodeKeys(value);
+      value = decodeKeys(value, asciiOnly);
     } else if ( Array.isArray(value) ) {
       value.forEach((v,i) => {
         if ( v === WillBecomeUndefined ) {
@@ -106,39 +110,51 @@ function weirdReviver(reviver) {
         }
       });
     } else if ( typeof value == "string" ) {
-      value = decode(value, that, key);
+      value = decode(value, that, key, asciiOnly);
     }
     return value;
   };
 }
 
-function encodeKeys(obj) {
+function encodeKeys(obj, asciiOnly = true) {
   const newObj = {};
   for( const key of Object.keys(obj) ) {
-    const encodedKey = encode(key);
-    newObj[encodedKey] = obj[key];
-    if ( newObj[encodedKey] instanceof Date ) {
+    let setKey = key;
+    if ( asciiOnly ) {
+      const encodedKey = encode(key);
+      newObj[encodedKey] = obj[key];
+      setKey = encodedKey;
+    } else {
+      newObj[key] = obj[key];
+    }
+    if ( newObj[setKey] instanceof Date ) {
       // this is necessary because Date is processed specially
       // presumable because it has a toJSON method
-      newObj[encodedKey] = new WrapDate(obj[key]);
+      newObj[setKey] = new WrapDate(obj[key]);
     }
   }
   return newObj;
 }
 
-function decodeKeys(obj) {
+function decodeKeys(obj, asciiOnly = true) {
   const oldObj = {};
   for( const encodedKey of Object.keys(obj) ) {
-    const decodedKey = decode(encodedKey);
-    oldObj[decodedKey] = obj[encodedKey];
+    let setKey = encodedKey;
+    if ( asciiOnly ) {
+      const decodedKey = decode(encodedKey);
+      oldObj[decodedKey] = obj[encodedKey];
+      setKey = decodedKey;
+    } else {
+      oldObj[encodedKey] = obj[encodedKey];
+    }
     if ( obj[encodedKey] === WillBecomeUndefined ) {
-      oldObj[decodedKey] = undefined;
+      oldObj[setKey] = undefined;
     }
   }
   return oldObj;
 }
 
-function encode(val) {
+function encode(val, asciiOnly = true) {
   const to = typeof val;
 
   if ( val === null ) {
@@ -191,10 +207,14 @@ function encode(val) {
   } else if ( val instanceof WrapDate ) {
     return `t${serializeDate(val.$)}`; 
   }
-  return bin2hex(val);
+  if ( asciiOnly ) {
+    return bin2hex(val);
+  } else {
+    return val;
+  }
 }
 
-function decode(val, that, key) {
+function decode(val, that, key, asciiOnly = true) {
   if ( val === 'u' ) {
     return WillBecomeUndefined;
   } else if ( val === 'v' ) {
@@ -263,7 +283,11 @@ function decode(val, that, key) {
     const date = new Date(isoString);
     return date;
   }
-  return hex2bin(val);
+  if ( asciiOnly ) {
+    return hex2bin(val);
+  } else {
+    return val;
+  }
 }
 
 // type help

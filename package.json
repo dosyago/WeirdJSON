@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/c9fe/weird-json#readme",
   "dependencies": {
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "irradix": "^1.0.10"
   }
 }
