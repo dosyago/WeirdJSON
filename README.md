@@ -12,7 +12,6 @@ Comes in a variety of flavors:
 - JSON36 - JSON46 but coded down to (case-insensitive) A-Z0-9
 - JSON64 - JSON46 but encoded with irradix to a special base64
 
-
 Simple example:
 
 ```js
@@ -86,6 +85,10 @@ Like JSON46, but compressed with LZW, then encoded into the 36ers: a-z, 0-9 plus
 ### JSON38
 
 Like JSON37, but separated into stanzas separted by `-` dash. Also, NATO phonetic alphabet OK.
+
+### JSON64
+
+Like JSON46, but instead of being coded down to ASCII we leave the unicode in, then encode it in a special Base64 powered by [irradix](https://github.com/c9fe/irradix) that uses bit packing.
 
 ## examplings
 
