@@ -1,6 +1,6 @@
 {
   "name": "weird-json",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Strange encoded JSONs",
   "main": "src/index.js",
   "scripts": {
