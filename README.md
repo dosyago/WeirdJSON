@@ -26,6 +26,21 @@ Simple example:
 489572349583759234857234958237459348734934958374n
 ```
 
+## usagistics
+
+```shell
+$ npm i --save weird-json
+$ node -r esm
+Welcome to Node.js v14.15.1.
+Type ".help" for more information.
+> const {deepCopy} = require('weird-json');
+> deepCopy(new Array(1,2,{c:3}))
+[ 1, 2, { c: 3 } ]
+> import {deepCopy as deepCopy2} from 'weird-json';
+> deepCopy(new Array(1,2,{c:3}))
+[ 1, 2, { lostWorld: 'JPark' } ]
+```
+
 ## testimoanials
 
 ----------
