@@ -8,6 +8,10 @@ export const JSON46 = _JSON46;
 export const JSON36 = _JSON36;
 export const JSON37 = _JSON37;
 
+export function deepCopy(obj) {
+  return JSON36.parse(JSON36.stringify(obj));
+}
+
 export const JSON64 = {
   parse: j64Parse,
   stringify: j64Stringify
@@ -24,5 +28,6 @@ function j64Stringify(o, replacer) {
   const str64 = irradix.encodeString(j36str, 6);
   return str64;
 }
+
 
 

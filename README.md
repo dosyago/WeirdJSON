@@ -4,13 +4,14 @@ A menagerie of strange, encoded JSONs, for connoisseurs.
 
 # what?
 
-JSON superset, supporting BigInts, TypedArrays, null, undefined and Symbol.
+JSON superset, supporting BigInts, TypedArrays, null, undefined, Symbol and more.
 
 Comes in a variety of flavors:
 
-- JSON46 - Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64. HUZZAH!
 - JSON36 - JSON46 but coded down to (case-insensitive) A-Z0-9
+- JSON46 - Supports the full 17-plane Unicode 13, and codes it down to ASCII without Base64. HUZZAH!
 - JSON64 - JSON46 but encoded with irradix to a special base64
+- deepCopy - clones an object as deeply as possible. (Limitations: No support for functions because of closure inequality, no preservation of prototype chain for custom objects but all JavaScript builtin objects supported on the browser are handled (but not DOM/CSSOM API objects like Node, or XMLHttpRequest, CSSStyleSheetDeclaration), no cloning of unregistered Symbols (i.e, not created with Symbol.for), no support for WeakSet nor WeakMap. See [limitationisms](#limitationisms) for details.
 
 Simple example:
 
@@ -299,8 +300,15 @@ We aim for equality based on [assert.deepStrictEqual](https://nodejs.org/api/ass
 - [x] add symbol support
 - [x] add support for Map and Set
 - [x] Add support for Date
+- [x] add deepCopy
 - [ ] implement json37, and json38
 - [ ] optimize speed
+- [ ] support Node.JS built-ins like Buffer, etc
+- [ ] revive prototype chain for instances of custom class or prototypal inheritance
+
+## preeori artus / anteeori artusismus
+
+- [yuwu9145/nest-object-deep-copy](https://github.com/yuwu9145/nest-object-deep-copy) doesn't support everything but supports cloning functions (:scream:) and prototypes (:astonished:)
 
 ## limitationisms
 

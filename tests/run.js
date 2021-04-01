@@ -1,5 +1,5 @@
 import util from 'util';
-import {JSON46,JSON36,JSON37,JSON64} from '../src/index.js';
+import {deepCopy,JSON46,JSON36,JSON37,JSON64} from '../src/index.js';
 
 test();
 
@@ -86,4 +86,6 @@ function test() {
   console.log({dObj: JSON64.parse(dStr)});
 
   console.assert(equal, "Revived object was not equal");
+
+  console.assert(util.isDeepStrictEqual(a,deepCopy(aObj)));
 }
