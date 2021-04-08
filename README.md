@@ -323,7 +323,7 @@ We aim for equality based on [assert.deepStrictEqual](https://nodejs.org/api/ass
 
 ## preeori artus / anteeori artusismus
 
-- [yuwu9145/nest-object-deep-copy](https://github.com/yuwu9145/nest-object-deep-copy) doesn't support everything but supports cloning functions (:scream:) and prototypes (:astonished:)
+- [yuwu9145/nest-object-deep-copy](https://github.com/yuwu9145/nest-object-deep-copy) doesn't support everything but supports cloning prototypes (:astonished:)
 
 ## limitationisms
 
