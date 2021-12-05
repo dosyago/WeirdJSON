@@ -1,9 +1,10 @@
-The Artistic License
-Preamble
+# The Artistic License
+
+## Preamble
 
 The intent of this document is to state the conditions under which a Package may be copied, such that the Copyright Holder maintains some semblance of artistic control over the development of the package, while giving the users of the package the right to use and distribute the Package in a more-or-less customary fashion, plus the right to make reasonable modifications.
 
-Definitions:
+**Definitions:**
 
 "Package" refers to the collection of files distributed by the Copyright Holder, and derivatives of that collection of files created through textual modification.
 "Standard Version" refers to such a Package if it has not been modified, or has been modified in accordance with the wishes of the Copyright Holder.
