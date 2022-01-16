@@ -73,6 +73,9 @@ Type ".help" for more information.
 > 
 > &mdash; Third top comment on HN :japanese_goblin:
 
+
+*For general HN readers please know the anti-HN-goblin snark is not aimed at you, it's only skewering a small subset of very mean commenters. They're out there but they're probably not you.*
+
 ----------
 
 ## get to know the current JSONs-in-residence
