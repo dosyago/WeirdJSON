@@ -41,6 +41,24 @@ function getDimensions(n) { // : {W,H}
 function toMatrix(str, {W,H}) { // : matrix
   // convert a string to a matrix of width W, and height H
   // reading string l to r, and matrix l to r, top to bottom
+
+  const matrix = new Array(H);
+  let i = 0;
+  let y;
+  let row;
+
+  form: for( y = 0; y < H; y++ ) {
+    row = new Array(W).fill('');
+    for( let x = 0; x < W; x++ ) {
+      row[x] = str[i++];
+      if ( i >= str.length ) break form;
+    }
+    matrix[y] = row;
+  }
+
+  matrix[y] = row;
+
+  return matrix;
 }
 
 function fromMatrix(matrix) { // : str
