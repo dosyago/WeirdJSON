@@ -1,6 +1,7 @@
 {
   "name": "json46",
   "version": "1.2.5",
+  "type": "module",
   "description": "Weird, encoded JSON for all Unicode, in ASCII",
   "main": "index.js",
   "scripts": {

@@ -2,6 +2,7 @@
   "name": "json36",
   "version": "1.1.4",
   "description": "Weird, encoded JSON for all Unicode, in ASCII",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
