@@ -50,22 +50,29 @@ export function getDimension(n) { // : {W,H}
 }
 
 // others
-  function pop( thing ) {
-    if ( typeof pop !== string ) {
+  function pop( thing, rev = false) {
+    if ( typeof thing !== 'string' ) {
       throw new TypeError(`base64 transpose only works on string data.`);
     }
 
-    const b64 = toBase64(thing);
+    let b64 = toBase64(thing);
 
-    const {W, H} = getDimension(last.length);
+    console.log({b64});
 
-    const matrix = toMatrix(last, {W,H});
+    b64 = b64.replace(/=/g, '');
 
-    transpose(matrix);
+    const {W, H} = getDimension(b64.length);
 
-    const b64_ = fromMatrix(matrix);
+    const matrix = toMatrix(b64, {W: rev ? H : W,H: rev ? W : H});
 
-    const newthing = fromBase64(first);
+    const matrix_ = transpose(matrix);
+    console.log(matrix_);
+    console.log(transpose(matrix_));
+
+    const b64_ = fromMatrix(matrix_);
+    console.log({b64_});
+
+    const newthing = fromBase64(b64_);
 
     return newthing;
   }
@@ -92,12 +99,12 @@ export function getDimension(n) { // : {W,H}
   }
 
   function fromBase64(a) {
-    const b = globalThis.atob ? atob(a) : Buffer.from(a, 'base64').toString('utf-8');
+    const b = Buffer.from(a, 'base64').toString();
     return b;
   }
 
   function toBase64(b) {
-    const a = globalThis.btoa ? btoa(b) : Buffer.from(b, 'utf-8').toString('base64');
+    const a = Buffer.from(b).toString('base64') 
     return a;
   }
 
@@ -140,6 +147,7 @@ export function getDimension(n) { // : {W,H}
     }
 
     const W = matrix[0].length;
+    let str = '';
 
 
     for( let y = 0; y < H; y++ ) {
@@ -174,7 +182,7 @@ export function getDimension(n) { // : {W,H}
 
     for( let y = 0; y < H; y++ ) {
       for( let x = 0; x < W; x++ ) {
-        matrix_[x][y] = matrix_[y][x];
+        matrix_[x][y] = matrix[y][x];
       }
     }
 
