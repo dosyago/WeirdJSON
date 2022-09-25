@@ -50,16 +50,80 @@ export function getDimension(n) { // : {W,H}
 }
 
 // others
+  export function toSafe(str) {
+    const chars = [...str];
+
+    const codes = chars.map(char => char.codePointAt(0));
+
+    const units = new Uint32Array(codes);
+    console.log(units)
+
+    const bytes = new Uint8Array(units.buffer);
+
+    console.log(bytes);
+
+    const view = new DataView(units.buffer);
+    console.log(view);
+
+    let b64 = '';
+
+    for( let i = 0; i < view.byteLength; i+=4) {
+      const buf = Buffer.from([
+        view.getUint8(i+0),
+        view.getUint8(i+1),
+        view.getUint8(i+2),
+      ]);
+
+      const out = buf.toString('base64');
+      console.log(out);
+      b64 += out;
+    }
+    return b64;
+  }
+
+  export function fromSafe(str) {
+    const CHUNK_SZ = 4; 
+
+    const chunks = Array.from(str).reduce((C, c) => {
+      let lastChunk = C.pop();
+
+      if ( ! lastChunk ) {
+        lastChunk = c;
+      } else if ( lastChunk.length < CHUNK_SZ ) {
+        lastChunk += c;
+      } else {
+        C.push(lastChunk);
+        lastChunk = c;
+      }
+      C.push(lastChunk);
+
+      return C;
+    }, []);
+
+    const bufs = chunks.map(chunk => {
+      const arr = new Uint8Array(4);
+      const buf = Buffer.from(chunk, 'base64');
+      arr.set(buf);
+      return arr;
+    });
+
+    const views = bufs.map(buf => new DataView(buf.buffer));
+
+    const codes = views.map(view => view.getUint32(0, true));
+
+    const chars = codes.map(code => String.fromCodePoint(code));
+
+    return chars.join('');
+  }
+
   function pop( thing, rev = false) {
     if ( typeof thing !== 'string' ) {
       throw new TypeError(`base64 transpose only works on string data.`);
     }
 
-    let b64 = toBase64(thing);
+    let b64 = toSafe(thing);
 
     console.log({b64});
-
-    b64 = b64.replace(/=/g, '');
 
     const {W, H} = getDimension(b64.length);
 
@@ -72,7 +136,7 @@ export function getDimension(n) { // : {W,H}
     const b64_ = fromMatrix(matrix_);
     console.log({b64_});
 
-    const newthing = fromBase64(b64_);
+    const newthing = fromSafe(b64_);
 
     return newthing;
   }
