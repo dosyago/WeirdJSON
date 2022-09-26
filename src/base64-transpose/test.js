@@ -1,10 +1,12 @@
-import {default as B, getDimension, toSafe, fromSafe} from './index.js';
+import crypto from 'crypto';
 import fs from 'fs';
+
+import {default as B, getDimension, toSafe, fromSafe} from './index.js';
 
 const MAX_TEST = 1000;
 //test();
-testPop();
-//testToSafe();
+//testPop();
+testToSafe();
 
 function testPop() {
   const original = '黑種草';
@@ -14,10 +16,39 @@ function testPop() {
 }
 
 function testToSafe() {
-  const safe = toSafe('你好');
-  console.log({safe});
-  const original = fromSafe(safe);
-  console.log({original});
+  {
+    const original = '你好';
+    const safe = toSafe(original);
+    console.log({safe});
+    const recovered = fromSafe(safe);
+    console.log({recovered});
+  }
+  {
+    const original = '黑種草';
+    console.log({original});
+    const safe = toSafe(original);
+    console.log({safe});
+    const recovered = fromSafe(safe);
+    console.log({recovered});
+  }
+  {
+    const original = 'hello world how are you? निगेला सतीव';
+    console.log({original});
+    const safe = toSafe(original);
+    console.log({safe});
+    const recovered = fromSafe(safe);
+    console.log({recovered});
+  }
+  {
+    const original = crypto.randomBytes(12).toString('binary');
+    console.log({original});
+    const safe = toSafe(original);
+    console.log({safe});
+    const recovered = fromSafe(safe);
+    console.log({recovered});
+    console.log(`Valid?`, recovered === original);
+  }
+
 }
 
 function test() {

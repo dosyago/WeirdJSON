@@ -57,8 +57,6 @@ export function getDimension(n) { // : {W,H}
 
     let b64 = toSafe(thing, {binary});
 
-    console.log({pop:{thing, rev, binary, b64}});
-
     const {W, H} = getDimension(b64.length);
 
     const matrix = toMatrix(b64, {W: rev ? H : W,H: rev ? W : H});
@@ -78,11 +76,14 @@ export function getDimension(n) { // : {W,H}
   }
 
   export function toSafe(str, {binary: binary = false} = {}) {
+    console.group('toSafe', {str, binary});
     const chars = [...str];
 
     const codes = chars.map(char => char.codePointAt(0));
 
     let b64 = '';
+
+    console.log({chars,codes});
 
     if ( binary ) {
       const CHUNK_SZ = 3; 
@@ -105,11 +106,13 @@ export function getDimension(n) { // : {W,H}
 
       const bufs = chunks.map(chunk => Buffer.from(chunk));
 
-      console.log({bufs});
-      bufs.pop();
+      console.log(JSON.stringify({chunks,bufs}, null, 2));
+      //bufs.pop();
 
       for( const buf of bufs ) {
-        b64 += buf.toString('base64');
+        const out = buf.toString('base64');
+        console.log({out});
+        b64 += out;
       }
     } else {
       const units = new Uint32Array(codes);
@@ -118,18 +121,36 @@ export function getDimension(n) { // : {W,H}
 
       const view = new DataView(units.buffer);
 
+      console.log({units, bytes, view});
+
       for( let i = 0; i < view.byteLength; i+=4) {
-        const buf = Buffer.from([
+        const arr = [
           view.getUint8(i+0),
-          view.getUint8(i+1),
-          view.getUint8(i+2),
-        ]);
+        ];
+
+        if ( (i+1) < view.byteLength ) {
+          arr.push(
+            view.getUint8(i+1),
+          );
+        }
+
+        if ( (i+2) < view.byteLength ) {
+          arr.push(
+            view.getUint8(i+2),
+          );
+        }
+
+        const buf = Buffer.from(arr);
 
         const out = buf.toString('base64');
+
+        console.log({buf, out});
         b64 += out;
       }
     }
 
+    console.log({b64});
+    console.groupEnd();
     return b64;
   }
 
