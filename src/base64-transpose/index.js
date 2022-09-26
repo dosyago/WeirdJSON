@@ -50,38 +50,90 @@ export function getDimension(n) { // : {W,H}
 }
 
 // others
-  export function toSafe(str) {
+  function pop( thing, rev = false, binary = false) {
+    if ( typeof thing !== 'string' ) {
+      throw new TypeError(`base64 transpose only works on string data.`);
+    }
+
+    let b64 = toSafe(thing, {binary});
+
+    console.log({pop:{thing, rev, binary, b64}});
+
+    const {W, H} = getDimension(b64.length);
+
+    const matrix = toMatrix(b64, {W: rev ? H : W,H: rev ? W : H});
+
+    const matrix_ = transpose(matrix);
+
+    const b64_ = fromMatrix(matrix_);
+
+    let newthing;
+    try {
+      newthing = fromSafe(b64_);
+    } catch(e) {
+      newthing = fromSafe(b64_, {binary: true});
+    }
+
+    return newthing;
+  }
+
+  export function toSafe(str, {binary: binary = false} = {}) {
     const chars = [...str];
 
     const codes = chars.map(char => char.codePointAt(0));
 
-    const units = new Uint32Array(codes);
-    console.log(units)
-
-    const bytes = new Uint8Array(units.buffer);
-
-    console.log(bytes);
-
-    const view = new DataView(units.buffer);
-    console.log(view);
-
     let b64 = '';
 
-    for( let i = 0; i < view.byteLength; i+=4) {
-      const buf = Buffer.from([
-        view.getUint8(i+0),
-        view.getUint8(i+1),
-        view.getUint8(i+2),
-      ]);
+    if ( binary ) {
+      const CHUNK_SZ = 3; 
 
-      const out = buf.toString('base64');
-      console.log(out);
-      b64 += out;
+      const chunks = codes.reduce((C, c) => {
+        let lastChunk = C.pop();
+
+        if ( ! lastChunk ) {
+          lastChunk = [c];
+        } else if ( lastChunk.length < CHUNK_SZ ) {
+          lastChunk.push(c);
+        } else {
+          C.push(lastChunk);
+          lastChunk = [c];
+        }
+        C.push(lastChunk);
+
+        return C;
+      }, []);
+
+      const bufs = chunks.map(chunk => Buffer.from(chunk));
+
+      console.log({bufs});
+      bufs.pop();
+
+      for( const buf of bufs ) {
+        b64 += buf.toString('base64');
+      }
+    } else {
+      const units = new Uint32Array(codes);
+
+      const bytes = new Uint8Array(units.buffer);
+
+      const view = new DataView(units.buffer);
+
+      for( let i = 0; i < view.byteLength; i+=4) {
+        const buf = Buffer.from([
+          view.getUint8(i+0),
+          view.getUint8(i+1),
+          view.getUint8(i+2),
+        ]);
+
+        const out = buf.toString('base64');
+        b64 += out;
+      }
     }
+
     return b64;
   }
 
-  export function fromSafe(str) {
+  export function fromSafe(str, {binary: binary = false} = {}) {
     const CHUNK_SZ = 4; 
 
     const chunks = Array.from(str).reduce((C, c) => {
@@ -107,38 +159,19 @@ export function getDimension(n) { // : {W,H}
       return arr;
     });
 
-    const views = bufs.map(buf => new DataView(buf.buffer));
+    let chars;
+    if ( binary ) {
+      const codes = bufs.map(b => Array.from(b)).flat();
+      chars = codes.map(code => String.fromCharCode(code));
+    } else {
+      const views = bufs.map(buf => new DataView(buf.buffer));
 
-    const codes = views.map(view => view.getUint32(0, true));
+      const codes = views.map(view => view.getUint32(0, true));
 
-    const chars = codes.map(code => String.fromCodePoint(code));
-
-    return chars.join('');
-  }
-
-  function pop( thing, rev = false) {
-    if ( typeof thing !== 'string' ) {
-      throw new TypeError(`base64 transpose only works on string data.`);
+      chars = codes.map(code => String.fromCodePoint(code));
     }
 
-    let b64 = toSafe(thing);
-
-    console.log({b64});
-
-    const {W, H} = getDimension(b64.length);
-
-    const matrix = toMatrix(b64, {W: rev ? H : W,H: rev ? W : H});
-
-    const matrix_ = transpose(matrix);
-    console.log(matrix_);
-    console.log(transpose(matrix_));
-
-    const b64_ = fromMatrix(matrix_);
-    console.log({b64_});
-
-    const newthing = fromSafe(b64_);
-
-    return newthing;
+    return chars.join('');
   }
 
   function btoa_( raw ) {

@@ -6,18 +6,18 @@ const MAX_TEST = 1000;
 testPop();
 //testToSafe();
 
+function testPop() {
+  const original = '黑種草';
+  const popped = B.pop(original);
+  const unpopped = B.pop(popped, true, true);
+  console.log({original, popped, unpopped});
+}
+
 function testToSafe() {
   const safe = toSafe('你好');
   console.log({safe});
   const original = fromSafe(safe);
   console.log({original});
-}
-
-function testPop() {
-  const a = B.pop('黑種草');
-  fs.writeFileSync('a.bin', a);
-  const b = B.pop(a, true);
-  console.log(b);
 }
 
 function test() {
