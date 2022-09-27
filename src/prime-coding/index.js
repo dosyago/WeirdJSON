@@ -1,8 +1,70 @@
+const primeCache = [2, 3, 5];
+let primeSet = new Set(primeCache);
+
 export function nprimes(n, beginning = 2) {
   // return n primes, optionally starting at beginning
+  console.info(`Super fast version`);
+  let fillCache = beginning == 2;
+
+  const primes = [];
+  let i = beginning;
+
+  while(primes.length < n) {
+    if ( isPrime(i) ) {
+      primes.push(i);
+      if ( fillCache && primes.length > primeCache.length ) {
+        primeCache.push(i); 
+      }
+    }
+    i++;
+  }
+
+  primeSet = new Set(primeCache);
+
+  return primes.map(p => BigInt(p));
 }
 
-export function code(str, {unitBitSz: unitBitSz = 8, blockSz: blockSz = 256}) {
+function isPrime(n) {
+  if ( n === 2 || n === 3 ) return true;
+
+  let remainder = n % 2;
+
+  if ( remainder === 0 ) return false;
+
+  remainder = n % 3;
+
+  if ( remainder === 0 ) return false;
+
+  if ( primeSet.has(n) ) return true;
+
+  const maxFactor = Math.floor(Math.sqrt(n));
+
+  let primeIndex = 2;
+  let factor = primeCache[primeIndex]; // 5
+
+  while(factor <= maxFactor) {
+    remainder = n % factor;
+
+    if ( remainder === 0 ) return false;
+
+    primeIndex++;
+    if ( primeIndex < primeCache.length ) {
+      factor = primeCache[primeIndex]; 
+    } else {
+      const sixRemainder = factor % 6;
+
+      if ( sixRemainder === 5 ) {
+        factor += 2;
+      } else if ( sixRemainder === 1 ) {
+        factor += 4;
+      }
+    }
+  }
+
+  return true;
+}
+
+export function primeCode(str, {unitBitSz = 8, blockSz = 8}) {
   // encode str in a 'prime code'
   // to do this:
   // 1. let primes = nprimes( 2**unitBitSz * blockSz )
@@ -11,19 +73,72 @@ export function code(str, {unitBitSz: unitBitSz = 8, blockSz: blockSz = 256}) {
   // 4. let table = creat ea table from primes where each row of the table is a value in 0 to 2**unitBitSz - 1, and
   //    each column in the table is a position in the block, then
   //    starting at the first row and the first column (top left), move left to right across a row, and
-        then to the next row down, and: for each unit in the table, assign the next prime from
-        primes to that unit cell.
+  //    then to the next row down, and: for each unit in the table, assign the next prime from
+  //    primes to that unit cell.
   // 5. for each unitBitSz-bit  unit, u, at position, i, in the block (from the input), look up the prime
-        at row, u, and column, i and multiple product by that prime (and perform the multiplication modulo
-        2**(unitBitSz*blockSz)
+  //    at row, u, and column, i and multiple product by that prime (and perform the multiplication modulo
+  //    2**(unitBitSz*blockSz)
   // 6. if there is more input that has yet to be processed, return to step 3, and repeat. 
-        optionally munge the order of the table by a factor that depends on the 
-        previous block (in a way yet to be determined, or defined by the specific implementer of this instance). if 
-        there is no further input to process, continue to step 7.
+  //    optionally munge the order of the table by a factor that depends on the 
+  //    previous block (in a way yet to be determined, or defined by the specific implementer of this instance). if 
+  //      there is no further input to process, continue to step 7.
   // 7. output product
 
-  // I am very interested in the properties of this hash / key extension function and want 
-  // to implement and investigate
+  //// I am very interested in the properties of this hash / key extension function and want 
+
+  const rowCount = blockSz;
+  const columnCount = 2**unitBitSz;
+
+  const table = makeTable({rowCount, columnCount});
+
+  const buffer = Buffer.from(str);
+
+  const bytes = new Uint8Array(buffer);
+  const unitCount = bytes.length;
+
+  fillTable(table, {rowCount, columnCount});
+
+  const modulus = 2n**(BigInt(blockSz*unitBitSz));
+  let product = 1n;
+
+  for( let i = 0; i < bytes.length; i+= blockSz) {
+    for( let j = i; j < Math.min(unitCount,i+blockSz); j++ ) {
+      const byte = bytes[j];
+      const prime = table[j-i][byte];
+      console.log({i, byte, prime});
+      product = (product * prime) % modulus;
+    }
+  }
+  
+  return product;
+}
+
+function makeTable({rowCount, columnCount}) {
+  const table = new Array(rowCount);
+
+  for( let r = 0; r < rowCount; r++ ) {
+    const row = new Array(columnCount).fill(0);
+    table[r] = row;
+  }
+
+  return table;
+}
+
+function fillTable(table, {rowCount, columnCount}) {
+  const primes = nprimes(rowCount*columnCount);
+  let p = 0;
+
+  for( let r = 0; r < rowCount; r++ ) {
+    const row = table[r];
+    for( let c = 0; c < columnCount; c++ ) {
+      if ( p >= primes.length ) {
+        throw new TypeError(`Table too big for amount of primes availiable`);
+      }
+      row[c] = primes[p++];
+    }
+  }
+
+  return table;
 }
         
 
