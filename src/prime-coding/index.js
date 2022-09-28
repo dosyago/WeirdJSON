@@ -67,7 +67,7 @@ function isPrime(n) {
   return true;
 }
 
-export function primeCode(str, {unitBitSz = 8, blockSz = 8, reduce = true, asBigInt = false}) {
+export function primeCode(str, {unitBitSz = 8, blockSz = 8, reduce = false, asBigInt = false}) {
     // encode str in a 'prime code'
     // to do this:
     // 1. let primes = nprimes( 2**unitBitSz * blockSz )

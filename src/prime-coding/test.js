@@ -5,10 +5,33 @@ import {
 } from './index.js'
 
 //testNPrimes(1e7);
-testPrimeCode('hello there 你好');
-testPrimeCode('हाय माई नेम इज द रियल स्लिम शैडी');
-testPrimeCode(`What's up folks?`);
-testPrimeCode(`Что случилось с моими домами?`);
+//testPrimeCode('hello there 你好');
+//testPrimeCode('हाय माई नेम इज द रियल स्लिम शैडी');
+//testPrimeCode(`What's up folks?`);
+//testPrimeCode(`Что случилось с моими домами?`);
+
+testError(`What's up folks?`);
+
+function testError(str) {
+  const SINGLE_ERROR_PROB = 0.75;
+  const unitBitSz = 8;
+  const blockSz = Buffer.from(str).byteLength;
+  
+  const output = primeCode(str, {unitBitSz, blockSz});
+  const chars = [...output];
+  console.log({output, chars});
+
+  if ( Math.random() <= SINGLE_ERROR_PROB ) {
+    chars[Math.floor(Math.random()*chars.length)] = 'a';
+    console.log("Made one error");
+  }
+
+  const input = chars.join('');
+  console.log({output, erroredOutput: input});
+
+  const possiblyCorrupt = reconstruct(input, {unitBitSz, blockSz});
+  console.log({original: str, possiblyCorrupt});
+}
 
 function testPrimeCode(str, {unitBitSz = 8, blockSz = Buffer.from(str).byteLength} = {}) {
   console.time(`primeCode`);
@@ -25,7 +48,7 @@ function testPrimeCode(str, {unitBitSz = 8, blockSz = Buffer.from(str).byteLengt
     undoUtf8: utf8ToBigInt(output)
   });
 
-  const reconstruction = reconstruct(output, factors, {unitBitSz, blockSz});
+  const reconstruction = reconstruct(output, {unitBitSz, blockSz});
   console.log(reconstruction);
 }
 
