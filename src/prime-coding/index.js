@@ -1,9 +1,12 @@
+const DEBUG = {
+  showDecoding: false,
+  showEncoding: false,
+};
 const primeCache = [2, 3, 5];
 let primeSet = new Set(primeCache);
 
 export function nprimes(n, beginning = 2) {
   // return n primes, optionally starting at beginning
-  console.info(`Super fast version`);
   let fillCache = beginning == 2;
 
   const primes = [];
@@ -64,7 +67,7 @@ function isPrime(n) {
   return true;
 }
 
-export function primeCode(str, {unitBitSz = 8, blockSz = 8, reduce = true}) {
+export function primeCode(str, {unitBitSz = 8, blockSz = 8, reduce = true, asBigInt = false}) {
     // encode str in a 'prime code'
     // to do this:
     // 1. let primes = nprimes( 2**unitBitSz * blockSz )
@@ -100,7 +103,7 @@ export function primeCode(str, {unitBitSz = 8, blockSz = 8, reduce = true}) {
     for( let j = i; j < Math.min(unitCount,i+blockSz); j++ ) {
       const byte = bytes[j];
       const prime = table[j-i][byte];
-      console.log({i, byte, prime});
+      DEBUG.showEncoding && console.log({i, byte, prime});
       if ( reduce ) {
         product = (product * prime) % modulus;
       } else {
@@ -109,7 +112,11 @@ export function primeCode(str, {unitBitSz = 8, blockSz = 8, reduce = true}) {
     }
   }
   
-  return product;
+  if ( asBigInt ) {
+    return product;
+  } else {
+    return bigIntToUtf8(product);
+  }
 }
 
 export function factorize(product, {unitBitSz, blockSz}) {
@@ -127,14 +134,23 @@ export function factorize(product, {unitBitSz, blockSz}) {
   return factors;
 }
 
-export function reconstruct(product, factors, {unitBitSz, blockSz}) {
+export function reconstruct(product, {unitBitSz, blockSz}) {
+  DEBUG.showDecoding && console.log('Reconstruct', {product});
+  if ( typeof product === "string" ) {
+    product = utf8ToBigInt(product);
+  } else if ( typeof product !== "bigint" ) {
+    throw new TypeError(`Argument product must be of type BigInt or String`); 
+  }
+
+  const factors = factorize(product, {unitBitSz, blockSz});
+
   const {rowCount, columnCount, table, inverse} = makeTable({unitBitSz, blockSz});
 
   const bytes = new Array(factors.length);
 
   factors.forEach((factor, i) => {
     const {row, column} = inverse.get(factor);
-    console.log({factor, row, column});
+    DEBUG.showDecoding && console.log({factor, row, column});
     bytes[row] = column;
   });
 
@@ -175,6 +191,34 @@ function fillTable(table, {rowCount, columnCount}) {
   }
 
   return inverse;
+}
+
+export function bigIntToUtf8(b) {
+  const max = 1n<<20n;
+  let str = '';
+  while(b) {
+    const r = b % max;
+    const char = String.fromCodePoint(parseInt(r.toString()));
+    str += char;
+    b -= r;
+    b /= max;
+  }
+
+  return str;
+}
+
+export function utf8ToBigInt(str) {
+  const max = 1n<<20n;
+  const chars = Array.from(str).reverse();
+  let b = 0n;
+
+  for( const char of chars ) {
+    const code = BigInt(char.codePointAt(0));
+    b *= max;
+    b += code;
+  }
+
+  return b;
 }
         
 
