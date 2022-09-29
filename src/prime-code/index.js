@@ -5,6 +5,28 @@ const DEBUG = {
 const primeCache = [2, 3, 5];
 let primeSet = new Set(primeCache);
 
+const PrimeCode = {
+  ncode,
+  dcode,
+  api: {
+    nprimes,
+    primeCode,
+    factorize,
+    reconstruct,
+    bigIntToUtf8,
+    utf8ToBigInt,
+  }
+};
+export default PrimeCode;
+
+export function ncode(str) {
+  return primeCode(str);
+}
+
+export function dcode(str) {
+  return reconstruct(str);
+}
+
 export function nprimes(n, beginning = 2) {
   // return n primes, optionally starting at beginning
   let fillCache = beginning == 2;
@@ -67,7 +89,11 @@ function isPrime(n) {
   return true;
 }
 
-export function primeCode(str, {unitBitSz = 8, blockSz = 8, reduce = false, asBigInt = false}) {
+export function primeCode(str, {unitBitSz = 8, blockSz = Buffer.from(str).byteLength, reduce = false, asBigInt = false} = {}) {
+  if ( unitBitSz !== 8 ) {
+    throw new TypeError(`Only 8 bit unit sizes currently implemented`);
+  }
+
     // encode str in a 'prime code'
     // to do this:
     // 1. let primes = nprimes( 2**unitBitSz * blockSz )
@@ -88,6 +114,7 @@ export function primeCode(str, {unitBitSz = 8, blockSz = 8, reduce = false, asBi
     // 7. output product
 
   //// I am very interested in the properties of this hash / key extension function and want 
+  //// to investigate
 
   const {rowCount, columnCount, table} = makeTable({unitBitSz, blockSz});
 
@@ -95,6 +122,7 @@ export function primeCode(str, {unitBitSz = 8, blockSz = 8, reduce = false, asBi
 
   const bytes = new Uint8Array(buffer);
   const unitCount = bytes.length;
+
 
   const modulus = 2n**(BigInt(blockSz*unitBitSz));
   let product = 1n;
@@ -119,7 +147,7 @@ export function primeCode(str, {unitBitSz = 8, blockSz = 8, reduce = false, asBi
   }
 }
 
-export function factorize(product, {unitBitSz, blockSz}) {
+export function factorize(product, {unitBitSz, blockSz = product.toString(2).length} = {}) {
   const primes = nprimes(2**unitBitSz*blockSz);
   // slow factorization
   const factors = [];
@@ -134,7 +162,10 @@ export function factorize(product, {unitBitSz, blockSz}) {
   return factors;
 }
 
-export function reconstruct(product, {unitBitSz, blockSz}) {
+export function reconstruct(product, {unitBitSz = 8, blockSz} = {}) {
+  if ( unitBitSz !== 8 ) {
+    throw new TypeError(`Only 8 bit unit sizes currently implemented`);
+  }
   DEBUG.showDecoding && console.log('Reconstruct', {product});
   if ( typeof product === "string" ) {
     product = utf8ToBigInt(product);
@@ -143,6 +174,8 @@ export function reconstruct(product, {unitBitSz, blockSz}) {
   }
 
   const factors = factorize(product, {unitBitSz, blockSz});
+
+  blockSz = factors.length;
 
   const {rowCount, columnCount, table, inverse} = makeTable({unitBitSz, blockSz});
 

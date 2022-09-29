@@ -290,7 +290,7 @@ $ npm i --save weird-json
 ## usagisms
 
 ```js
-import {JSON36, JSON46} from 'weird-json';
+import {JSON36, JSON46, PrimeCode} from 'weird-json';
 ```
 
 ## technicalisters

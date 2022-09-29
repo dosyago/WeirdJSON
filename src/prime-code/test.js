@@ -1,16 +1,29 @@
 import {
+  ncode,
+  dcode,
   nprimes, primeCode, factorize, reconstruct,
   bigIntToUtf8,
   utf8ToBigInt,
 } from './index.js'
 
+testNCodeDCode('hello there 你好');
 //testNPrimes(1e7);
 //testPrimeCode('hello there 你好');
 //testPrimeCode('हाय माई नेम इज द रियल स्लिम शैडी');
 //testPrimeCode(`What's up folks?`);
 //testPrimeCode(`Что случилось с моими домами?`);
+//testError(`What's up folks?`);
 
-testError(`What's up folks?`);
+function testNCodeDCode(str) {
+  const original = str;
+  const coded = ncode(original);
+  const decoded = dcode(coded);
+  console.log({
+    original, 
+    coded,
+    decoded
+  });
+}
 
 function testError(str) {
   const SINGLE_ERROR_PROB = 0.75;
