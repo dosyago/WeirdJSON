@@ -3,10 +3,12 @@ import irradix from 'irradix';
 import _JSON46 from './json46/index.js';
 import _JSON36 from './json36/index.js';
 import _JSON37 from './json37/index.js';
+import _PRIMECODE from './prime-code/index.js';
 
 export const JSON46 = _JSON46;
 export const JSON36 = _JSON36;
 export const JSON37 = _JSON37;
+export const PrimeCode = _PRIMECODE;
 
 export function deepCopy(obj) {
   return JSON36.parse(JSON36.stringify(obj));
