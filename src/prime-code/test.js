@@ -7,12 +7,12 @@ import {
 } from './index.js'
 
 testNCodeDCode('hello there 你好');
-//testNPrimes(1e7);
-//testPrimeCode('hello there 你好');
-//testPrimeCode('हाय माई नेम इज द रियल स्लिम शैडी');
-//testPrimeCode(`What's up folks?`);
-//testPrimeCode(`Что случилось с моими домами?`);
-//testError(`What's up folks?`);
+testNPrimes(1e4);
+testPrimeCode('hello there 你好');
+testPrimeCode('हाय माई नेम इज द रियल स्लिम शैडी');
+testPrimeCode(`What's up folks?`);
+testPrimeCode(`Что случилось с моими домами?`);
+testError(`What's up folks?`);
 
 function testNCodeDCode(str) {
   const original = str;

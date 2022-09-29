@@ -66,8 +66,12 @@ See the source for illustrating this.
 
 Typically, the output is 1.5 times the number of bits as the input for "ASCII" text, and longer for unicode text. 
 
+See the tests for some relevant output.
+
 ## What is this really?
 
 It's a reversible transform: an encoding.  
 
-Not unlike ROT13, or base64.  
+Not unlike ROT13, or base64. 
+
+Also, because of the lovely bit-mixing properties of multiplication, it's also an 'error detecting code', in the sense that, if there is an error, the output will normally be entirely corrupt. I like how that depends on primes.
