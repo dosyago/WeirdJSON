@@ -4,7 +4,11 @@ A menagerie of strange, encoded JSONs, for connoisseurs.
 
 # what?
 
-JSON superset, supporting BigInts, TypedArrays, null, undefined, Symbol and more.
+**TLDR** - JSON superset, supporting BigInts, TypedArrays, null, undefined, Symbol and more.
+
+WeirdJSON is a JavaScript / Node.JS library that allows you to serialize any JavaScript object to a "JSON-like" but extended, text representation. With weird-json, you can easily encode complex and unconventional data structures, including support for BigInts, TypedArrays, null, undefined, and Symbol. weird-json comes in a variety of flavors, including deepCopy, JSON36, JSON46, and JSON64, so you can choose the best option for your specific needs. Whether you're a JSON connoisseur or just looking to handle some weird data, weird-json has you covered!
+
+# features
 
 Comes in a variety of flavors:
 
