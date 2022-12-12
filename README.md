@@ -55,32 +55,10 @@ Type ".help" for more information.
 
 ----------
 
-> You stole our goddamn alphabet!
+> You stole our previous alphabet!
 >
 > &mdash; NATO
 
-----------
-
-> What's the point of this? I don't care what anyone claims, it's clearly a joke, but... Why? Oh yeah, let's invent a new incompatible standard. Great idea. Repo should at least have a warning to not use in production! 
->
-> &mdash; Top comment on HN :pout:
-
-----------
-
-> This sucks. Real JSON is waay better than OP. Or at least use Protobuf, it's popular and created by Google, or bson. Don't use this, it's clearly a security nightmare.
->
-> &mdash; Second Top comment on HN :vomiting_face:	
-
-----------
-
-> Hmm, interesting idea. Have you ever heard of Base64? Just curious why you chose to name it 46? And why JSON? There's specific definitions of 46, and JSON, and they don't say anything about this. Did I miss something in the JSON spec?
-> 
-> &mdash; Third top comment on HN :japanese_goblin:
-
-
-*For general HN readers please know the anti-HN-goblin snark is not aimed at you, it's only skewering a small subset of very mean commenters. They're out there but they're probably not you.*
-
-----------
 
 ## get to know the current JSONs-in-residence
 
@@ -340,4 +318,7 @@ NO support for:
 - unregistered Symbols. Because these will fail the equality test (DeepStrictEquality), by design of Symbol. Use registered Symbol's (Symbol.for) instead.
 - Functions. Because scope cannot be serialized in JavaScript at this time, and also because functions fail the equality test (DeepStrictEquality)
 
+## licensing
+
+Dual Licensed under APache-2.0 and the Artistic License. You can choose. 
 
